@@ -1,5 +1,3 @@
-require 'bettertabs_builder'
-
 module BettertabsHelper
 
   # Bettertabs helper
@@ -9,7 +7,7 @@ module BettertabsHelper
     selected_tab_id = params[:"#{bettertabs_id}_selected_tab"] || options.delete(:selected_tab)
     options[:class] = "bettertabs #{options[:class]}" # is important to keep the 'bettertabs' class even when the user adds more classes.
     options[:id] ||= bettertabs_id
-    tabbuilder = Bettertabs::BettertabsBuilder.new(bettertabs_id, self, selected_tab_id, options)
+    tabbuilder = BettertabsBuilder.new(bettertabs_id, self, selected_tab_id, options)
     yield(tabbuilder)
     tabbuilder.render
   end
