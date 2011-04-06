@@ -1,0 +1,3 @@
+This Rails APP will serve as scenario to test the bettertabs gem in a ruby1.9/Rails3.0.X environment.
+Go to the rails app root path (bettertabs/test/ruby_1_9/rails_3_0) and run:
+  $ rake spec:requests
