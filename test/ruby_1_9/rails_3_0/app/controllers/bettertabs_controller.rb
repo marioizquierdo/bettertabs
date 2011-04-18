@@ -26,7 +26,7 @@ class BettertabsController < ApplicationController
   def mixed_with_erb
     respond_to do |format|
       format.html {}
-      format.js { render 'mixed_with_erb' }
+      format.js { render 'tab_content' if params[:erb_test_selected_tab] == 'ajax_tab' }
     end
   end
   
