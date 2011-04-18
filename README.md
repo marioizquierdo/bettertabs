@@ -55,7 +55,7 @@ A simple tabbed content can be created using static tabs.
 
 In view `app/views/home/simple.html.erb`:
 
-    <% bettertabs :simpletabs do |tab| %>
+    <%= bettertabs :simpletabs do |tab| %>
       <%= tab.link :tab1, 'Tab One' do %>
         Hello world.
       <% end %>
@@ -83,7 +83,7 @@ In view `app/views/home/index.html.erb`:
 
 In partial `app/views/home/_mytabs.html.erb`:
 
-    <% bettertabs :mytabs do |tab| %>
+    <%= bettertabs :mytabs do |tab| %>
       <%= tab.static :home do %>
         <h2>Home</h2>
         <%= raw @content_for_home %>
@@ -129,7 +129,7 @@ In view `app/views/home/index.html.erb`:
 
 In partial `app/views/home/_mytabs.html.erb`:
 
-    <% bettertabs :mytabs do |tab| %>
+    <%= bettertabs :mytabs do |tab| %>
       <%= tab.ajax :home do %>
         <h2>Home</h2>
         <%= raw @content_for_home %>
@@ -174,19 +174,19 @@ Since the *mytabs* partial only contains the bettertabs helper, and bettertabs h
 
 Is easy to mix all types of tabs, and customize them using the provided options. For example (Using ruby 1.9.2 with HAML):
   
-    - bettertabs :example, :selected_tab => :chooseme do |tab|
-      - tab.static :simplest_tab, class: 'awesome-tab' do
+    = bettertabs :example, :selected_tab => :chooseme do |tab|
+      = tab.static :simplest_tab, class: 'awesome-tab' do
         Click this tab to see this content.
         
-      - tab.static :chooseme, 'CUSTOM TAB CONTENT' # as default, renders partial: 'the_two'
+      = tab.static :chooseme, 'CUSTOM TAB CONTENT' # as default, renders partial: 'the_two'
         
-      - tab.static :use_another_partial, partial: 'other_partial'
+      = tab.static :use_another_partial, partial: 'other_partial'
       
-      - tab.link :link_to_another_place, url: go_to_other_place_url  # will make a full new request
+      = tab.link :link_to_another_place, url: go_to_other_place_url  # will make a full new request
         
-      - tab.ajax :simple_ajax, title: 'Content is only loaded when needed, and will be loaded only once.'
+      = tab.ajax :simple_ajax, title: 'Content is only loaded when needed, and will be loaded only once.'
       
-      - tab.ajax :album, url: show_remote_album_path, partial: 'shared/album'
+      = tab.ajax :album, url: show_remote_album_path, partial: 'shared/album'
         
 
 From the Controller:
