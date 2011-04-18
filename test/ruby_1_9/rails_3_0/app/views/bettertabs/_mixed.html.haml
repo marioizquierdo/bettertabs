@@ -1,0 +1,6 @@
+= bettertabs :mixed do |tab|
+  = tab.link :link_tab do
+    Content for the link tab
+  = tab.static :static_tab do
+    Content for the static tab
+  = tab.ajax :ajax_tab, partial: 'tab_content'

@@ -253,7 +253,7 @@ So, you can write your controller code as follows, assuming that bettertabs_id i
         * selected tab is ul.tabs > li.active > a
         * each a element has element attributes:
            * data-tab-type (for javascript: change click behavior depending on type "static", "link" or "ajax")
-           * data-show-content-with-id (for javascript: element id to show when select this tab)
+           * data-show-content-id (for javascript: element id to show when select this tab)
      * sections for each tab content.
      * use a unique html id (based on bettertabs_id and tab_id) for each Tab and Content
   * The bettertabs builder ".from" method should accept:

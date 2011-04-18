@@ -1,0 +1,8 @@
+<h1>Test Mixed With ERB</h1>
+<%= bettertabs :erb_test do |tab| %>
+  <%= tab.link :link_tab do %>
+    Content for the link tab
+  <% end %>
+  <%= tab.static :static_tab, partial: 'tab_content' %>
+  <%= tab.ajax :ajax_tab, partial: 'tab_content', url: 'bettertabs/mixed?mixed-selected-tab=ajax_tab' %>
+<% end %>

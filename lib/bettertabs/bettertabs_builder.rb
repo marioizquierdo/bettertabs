@@ -58,6 +58,7 @@ class BettertabsBuilder
       content = ''
     end
     @contents << { tab_id: tab_id, tab_text: tab_text, content: content, html_options: content_html_options, tab_type: tab_type, active: active?(tab_id) }
+    nil
   end
   
   # Renders the bettertabs markup.
@@ -88,7 +89,7 @@ class BettertabsBuilder
          @tabs.map do |tab|
            tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
              tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
-             tab[:html_options][:"data-show-content-with-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
+             tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
              @template.link_to(tab[:text], tab[:url], tab[:html_options])
            end
          end.join.html_safe

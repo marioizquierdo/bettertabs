@@ -1,0 +1,6 @@
+= bettertabs :static do |tab|
+  - tab.static :tab1 do
+    Content for tab1
+  - tab.static :tab2 do
+    Content for tab2
+  - tab.static :tab_content # should render partial 'tab_content'
