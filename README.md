@@ -1,6 +1,8 @@
 Bettertabs
 ==========
 
+We know that splitting content in tabs is easy, but doing it well, clean, DRY, accessible, usable, fast and testable is not so easy at all.
+
 Bettertabs is a helper for Rails that renders the markup for a tabbed area in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
 
@@ -11,7 +13,6 @@ This gem is in its initial development phase. Not ready to use yet.
 ## Requirements: ##
   * Ruby 1.9.2
   * Rails 3
-  * HAML
   * Bettertabs jQuery plugin (that requires jQuery) (TODO: create the plugin)
   
 Although you can use bettertabs without javascript, and also should be possible to use another javascript for this, since the bettertabs helper only generates the appropiate markup.
@@ -26,7 +27,7 @@ Although you can use bettertabs without javascript, and also should be possible 
       * The browser's back and reload buttons will still work as expected.
       * All tabbed sections can be permalinked, keeping the selected tab.
   * Flexible and customizable.
-  * Keep your views testing simple. Thanks to the disabled-javascript feature, you can assert view components with the rails built-in functional and unit tests.
+  * Makes testing views simple. Thanks to the disabled-javascript feature, you can assert view components with the rails built-in functional and unit tests.
   * The CSS styles are up to you.
 
 ## Install ##
