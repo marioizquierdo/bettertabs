@@ -55,10 +55,11 @@ $.fn.bettertabs = ->
           
           #---
           trigger_before_events()
-          if tab_type_of(this_link) is 'ajax'
+          if tab_type_of(this_link) is 'ajax' and not this_link.data('content-loaded')?
             this_link.addClass('ajax-loading')
             this_tab_content.load this_link.attr('href'), ->
               this_link.removeClass('ajax-loading')
+              this_link.data('content-loaded', on)
               change_tab()
               trigger_after_events()
           else

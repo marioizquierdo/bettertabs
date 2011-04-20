@@ -10,24 +10,15 @@ class BettertabsController < ApplicationController
   end
   
   def ajax
-    respond_to do |format|
-      format.html {}
-      format.js { render 'ajax' }
-    end
+    render partial: 'ajax' and return if request.xhr?
   end
   
   def mixed
-    respond_to do |format|
-      format.html {}
-      format.js { render 'mixed' }
-    end
+    render partial: 'mixed' and return if request.xhr?
   end
   
   def mixed_with_erb
-    respond_to do |format|
-      format.html {}
-      format.js { render 'tab_content' if params[:erb_test_selected_tab] == 'ajax_tab' }
-    end
+    render partial: 'tab_content' and return if request.xhr? and params[:erb_test_selected_tab] == 'ajax_tab'
   end
   
 end

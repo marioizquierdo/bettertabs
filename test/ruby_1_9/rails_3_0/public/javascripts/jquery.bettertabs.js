@@ -56,10 +56,11 @@
               return this_tab_content.removeClass('hidden').addClass('active');
             };
             trigger_before_events();
-            if (tab_type_of(this_link) === 'ajax') {
+            if (tab_type_of(this_link) === 'ajax' && !(this_link.data('content-loaded') != null)) {
               this_link.addClass('ajax-loading');
               return this_tab_content.load(this_link.attr('href'), function() {
                 this_link.removeClass('ajax-loading');
+                this_link.data('content-loaded', true);
                 change_tab();
                 return trigger_after_events();
               });
