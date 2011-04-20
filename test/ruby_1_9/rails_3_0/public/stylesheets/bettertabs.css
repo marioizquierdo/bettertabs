@@ -1,0 +1,22 @@
+div.bettertabs { margin: 1em; width: 500px; }
+
+div.bettertabs ul.tabs { margin: 0; padding: 0; position: relative; }
+div.bettertabs ul.tabs li { 
+  background-color: #ccc;
+  border: 1px solid #999;
+  display: inline; float: left; height: 24px; line-height: 24px;
+  list-style: none outside none; 
+  margin-right: .5em; padding-right: .5em; padding-left: .5em; 
+  position: relative; top: 1px;
+}
+div.bettertabs ul.tabs li.active { height: 25px; background-color: #eee; border-bottom: none; }
+div.bettertabs ul.tabs li.active a  { color: black; }
+
+div.bettertabs ul.tabs li a { font-size: 80%; text-decoration: none; float: left; }
+div.bettertabs ul.tabs li a:link,
+div.bettertabs ul.tabs li a:visited { color: #444; }
+div.bettertabs ul.tabs li a:hover { color: black; }
+
+div.bettertabs div.content { padding: 1em; border: 1px solid #999; background-color: #eee; clear: left; }
+div.bettertabs div.content.hidden { display: block; margin: 5px; border: 2px dashed #ccc; background-color: white; } /* display: none; to hide content */
+div.bettertabs div.content.active { display: block; }

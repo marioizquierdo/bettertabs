@@ -51,7 +51,7 @@ class BettertabsBuilder
     @tabs << { tab_id: tab_id, text: tab_text, url: url, html_options: tab_html_options, tab_type: tab_type, active: active?(tab_id) }
     
     # Content
-    content_html_options = { id: content_html_id_for(tab_id), class: (active?(tab_id) ? 'active' : 'hidden') }
+    content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
     if active?(tab_id) or tab_type == TAB_TYPE_STATIC # Only render content for selected tab (static content is always rendered).
       content = block_given? ? @template.capture(&block) : @template.render(:partial => partial)
     else
@@ -82,7 +82,7 @@ class BettertabsBuilder
   # * @bettertabs_id: id of the bettertabs widget
   def render
     # Wrapper
-    tag(:nav, @wrapper_html_options) do
+    tag(:div, @wrapper_html_options) do
       
       # Tabs list
        tag(:ul, class: 'tabs') do
@@ -97,7 +97,7 @@ class BettertabsBuilder
        
        # Content sections
        @contents.map do |content|
-         tag(:section, content[:html_options]) do
+         tag(:div, content[:html_options]) do
            content[:content] # this should be blank unless content[:active] or content[:tab_type] == :static
          end
        end.join.html_safe
