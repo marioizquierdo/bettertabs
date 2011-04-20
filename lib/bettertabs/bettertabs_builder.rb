@@ -5,11 +5,12 @@ class BettertabsBuilder
   TAB_TYPE_AJAX = :ajax
   TAB_TYPES = [TAB_TYPE_STATIC, TAB_TYPE_LINK, TAB_TYPE_AJAX]
   
-  def initialize(bettertabs_id, template, selected_tab_id = nil, wrapper_html_options = {})
+  def initialize(bettertabs_id, template, selected_tab_id = nil, options = {})
     @bettertabs_id = bettertabs_id
     @template = template
     @selected_tab_id = selected_tab_id
-    @wrapper_html_options = wrapper_html_options
+    @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
+    @wrapper_html_options = options
     
     @tabs = []
     @contents = []
@@ -44,20 +45,26 @@ class BettertabsBuilder
     url = options.delete(:url) || { :"#{@bettertabs_id}_selected_tab" => tab_id }
     tab_type = (options.delete(:tab_type) || TAB_TYPE_STATIC).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
-    
-    # Tabs
-    tab_html_options = options # any other option will be used as tab html_option
     @selected_tab_id ||= tab_id # defaults to first tab
-    @tabs << { tab_id: tab_id, text: tab_text, url: url, html_options: tab_html_options, tab_type: tab_type, active: active?(tab_id) }
     
-    # Content
-    content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
-    if active?(tab_id) or tab_type == TAB_TYPE_STATIC # Only render content for selected tab (static content is always rendered).
-      content = block_given? ? @template.capture(&block) : @template.render(:partial => partial)
+    if @render_only_active_content
+      if active?(tab_id)
+        @only_active_content = block_given? ? @template.capture(&block) : @template.render(:partial => partial)
+      end
     else
-      content = ''
+      # Tabs
+      tab_html_options = options # any other option will be used as tab html_option
+      @tabs << { tab_id: tab_id, text: tab_text, url: url, html_options: tab_html_options, tab_type: tab_type, active: active?(tab_id) }
+    
+      # Content
+      content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
+      if active?(tab_id) or tab_type == TAB_TYPE_STATIC # Only render content for selected tab (static content is always rendered).
+        content = block_given? ? @template.capture(&block) : @template.render(:partial => partial)
+      else
+        content = ''
+      end
+      @contents << { tab_id: tab_id, tab_text: tab_text, content: content, html_options: content_html_options, tab_type: tab_type, active: active?(tab_id) }
     end
-    @contents << { tab_id: tab_id, tab_text: tab_text, content: content, html_options: content_html_options, tab_type: tab_type, active: active?(tab_id) }
     nil
   end
   
@@ -81,28 +88,34 @@ class BettertabsBuilder
   # * @wrapper_html_options: hash with the html options used in the bettertabs container
   # * @bettertabs_id: id of the bettertabs widget
   def render
-    # Wrapper
-    tag(:div, @wrapper_html_options) do
+    if @render_only_active_content
+      @only_active_content.html_safe
+    else
+    
+      # Wrapper
+      tag(:div, @wrapper_html_options) do
       
-      # Tabs list
-       tag(:ul, class: 'tabs') do
-         @tabs.map do |tab|
-           tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
-             tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
-             tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
-             @template.link_to(tab[:text], tab[:url], tab[:html_options])
+        # Tabs list
+         tag(:ul, class: 'tabs') do
+           @tabs.map do |tab|
+             tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
+               tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
+               tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
+               @template.link_to(tab[:text], tab[:url], tab[:html_options])
+             end
+           end.join.html_safe
+         end +
+       
+         # Content sections
+         @contents.map do |content|
+           tag(:div, content[:html_options]) do
+             content[:content] # this should be blank unless content[:active] or content[:tab_type] == :static
            end
          end.join.html_safe
-       end +
-       
-       # Content sections
-       @contents.map do |content|
-         tag(:div, content[:html_options]) do
-           content[:content] # this should be blank unless content[:active] or content[:tab_type] == :static
-         end
-       end.join.html_safe
-    end +
-    jquery_tag("$('##{@bettertabs_id}').bettertabs();")
+      end.html_safe +
+      jquery_tag("$('##{@bettertabs_id}').bettertabs();")
+      
+    end
   end
   
   
