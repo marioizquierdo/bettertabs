@@ -16,7 +16,7 @@
       'bettertabs-after-activate':      fired on content that was activated
       'bettertabs-after-ajax-loading':  fired on content after it was loaded via ajax
 
-  */  var $, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
+  */  var $, change_url, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
   tab_type_attr = 'data-tab-type';
   show_content_id_attr = 'data-show-content-id';
@@ -25,6 +25,11 @@
   };
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
+  };
+  change_url = function(url) {
+    if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
+      return history.replaceState(null, document.title, url);
+    }
   };
   $.fn.bettertabs = function() {
     return this.each(function() {
@@ -49,7 +54,8 @@
               this_tab.removeClass('hidden').addClass('active');
               this_tab_content.removeClass('hidden').addClass('active');
               previous_active_tab_content.trigger('bettertabs-after-deactivate');
-              return this_tab_content.trigger('bettertabs-after-activate');
+              this_tab_content.trigger('bettertabs-after-activate');
+              return change_url(this_link.attr('href'));
             };
             previous_active_tab_content.trigger('bettertabs-before-deactivate');
             this_tab_content.trigger('bettertabs-before-activate');

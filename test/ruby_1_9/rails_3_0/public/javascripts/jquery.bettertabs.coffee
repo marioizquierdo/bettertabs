@@ -24,6 +24,10 @@ show_content_id_attr = 'data-show-content-id' # attribute on tab links that indi
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
+change_url = (url) ->
+  if history? and history.replaceState? # use pushState for HTML5 browsers, ignore for old browsers (althoug we could use History.js)
+    history.replaceState null, document.title, url
+
 $.fn.bettertabs = ->
   @each ->
     mytabs = $(this)
@@ -47,6 +51,7 @@ $.fn.bettertabs = ->
             this_tab_content.removeClass('hidden').addClass('active')
             previous_active_tab_content.trigger 'bettertabs-after-deactivate'
             this_tab_content.trigger 'bettertabs-after-activate'
+            change_url this_link.attr('href')
           
           previous_active_tab_content.trigger 'bettertabs-before-deactivate'
           this_tab_content.trigger 'bettertabs-before-activate'
