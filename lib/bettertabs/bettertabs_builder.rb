@@ -101,8 +101,8 @@ class BettertabsBuilder
            content[:content] # this should be blank unless content[:active] or content[:tab_type] == :static
          end
        end.join.html_safe
-    end #+
-    #jquery_tag("$('##{@bettertabs_id}').bettertabs();")
+    end +
+    jquery_tag("$('##{@bettertabs_id}').bettertabs();")
   end
   
   

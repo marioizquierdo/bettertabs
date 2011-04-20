@@ -14,8 +14,20 @@
             'bettertabs-after-deactivate': fired on the tab or content that was deactivated
             'bettertabs-after-activate': fired on the tab or content that was activated
 
-  */  var $;
+  */  var $, after_activate_event, after_deactivate_event, before_activate_event, before_deactivate_event, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
+  tab_type_attr = 'data-tab-type';
+  show_content_id_attr = 'data-show-content-id';
+  tab_type_of = function($tab_link) {
+    return $tab_link.attr(tab_type_attr);
+  };
+  content_id_from = function($tab_link) {
+    return $tab_link.attr(show_content_id_attr);
+  };
+  before_deactivate_event = 'bettertabs-before-deactivate';
+  before_activate_event = 'bettertabs-before-activate';
+  after_deactivate_event = 'bettertabs-after-deactivate';
+  after_activate_event = 'bettertabs-after-activate';
   $.fn.bettertabs = function() {
     return this.each(function() {
       var mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
@@ -26,58 +38,24 @@
       tabs_and_contents = tabs.add(tabs_contents);
       return tabs_links.click(function(event) {
         var previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_and_content, this_tab_content;
-        event.preventDefault();
         this_link = $(this);
-        this_tab = this_link.parent();
-        if (!this_tab.is('.active')) {
-          this_tab_content = tabs_contents.filter("#" + (this_link.attr('data-show-content-id')));
-          this_tab_and_content = this_tab.add(this_tab_content);
-          previous_active_tab = tabs.filter('.active');
-          previous_active_tab_content = tabs_contents.filter('.active');
-          previous_active_tab_content.trigger('bettertabs-before-deactivate');
-          this_tab_content.trigger('bettertabs-before-activate');
-          tabs_and_contents.removeClass('active').addClass('hidden');
-          this_tab_and_content.removeClass('hidden').addClass('active');
-          previous_active_tab_content.trigger('bettertabs-after-deactivate');
-          return this_tab_content.trigger('bettertabs-after-activate');
+        if (tab_type_of(this_link) !== 'link') {
+          event.preventDefault();
+          this_tab = this_link.parent();
+          if (!this_tab.is('.active')) {
+            this_tab_content = tabs_contents.filter("#" + (content_id_from(this_link)));
+            this_tab_and_content = this_tab.add(this_tab_content);
+            previous_active_tab = tabs.filter('.active');
+            previous_active_tab_content = tabs_contents.filter('.active');
+            previous_active_tab_content.trigger(before_deactivate_event);
+            this_tab_content.trigger(before_activate_event);
+            tabs_and_contents.removeClass('active').addClass('hidden');
+            this_tab_and_content.removeClass('hidden').addClass('active');
+            previous_active_tab_content.trigger(after_deactivate_event);
+            return this_tab_content.trigger(after_activate_event);
+          }
         }
       });
     });
   };
-  /*
-  (function($){$.fn.bettertabs = function() {
-    return this.each(function(){
-      var $mytabs = $(this);
-      var $tabs = $mytabs.find('.tabs li a');
-      var $tabs_contents = $mytabs.find('> section');
-      var $tabs_and_contents = $tabs.add($tabs_contents);
-      $tabs.click(function(event) {
-        event.preventDefault();
-        var $this_tab = $(this);
-        if(!$this_tab.is('.active')) {
-          var $this_tab_content = $tabs_contents.filter($this_tab.attr('href'));
-          var $this_tab_and_content = $this_tab.add($this_tab_content);
-
-          var $previous_active_tab = $tabs.filter('.active');
-          var $previous_active_tab_content = $tabs_contents.filter('.active');
-          var $previous_active_tab_and_content = $previous_active_tab.add($previous_active_tab_content);
-
-          // trigger before-events
-          $previous_active_tab_and_content.trigger('bettertabs-before-deactivate');
-          $this_tab_and_content.trigger('bettertabs-before-activate');
-
-          // Activate selected tab content
-          $tabs_and_contents.removeClass('active');
-          $this_tab_and_content.addClass('active');
-
-          // trigger after-events
-          $previous_active_tab_and_content.trigger('bettertabs-after-deactivate');
-          $this_tab_and_content.trigger('bettertabs-after-activate');
-        };
-      });
-    });
-  };})(jQuery)
-
-  console.log( 'typeof myTabs():' + typeof jQuery('#panel.my-tabs').myTabs );
-  */
 }).call(this);
