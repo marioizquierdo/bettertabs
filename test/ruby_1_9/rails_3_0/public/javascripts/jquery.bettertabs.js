@@ -14,7 +14,7 @@
             'bettertabs-after-deactivate': fired on the tab or content that was deactivated
             'bettertabs-after-activate': fired on the tab or content that was activated
 
-  */  var $, after_activate_event, after_deactivate_event, before_activate_event, before_deactivate_event, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
+  */  var $, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
   tab_type_attr = 'data-tab-type';
   show_content_id_attr = 'data-show-content-id';
@@ -24,10 +24,6 @@
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
   };
-  before_deactivate_event = 'bettertabs-before-deactivate';
-  before_activate_event = 'bettertabs-before-activate';
-  after_deactivate_event = 'bettertabs-after-deactivate';
-  after_activate_event = 'bettertabs-after-activate';
   $.fn.bettertabs = function() {
     return this.each(function() {
       var mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
@@ -37,22 +33,40 @@
       tabs_contents = mytabs.children('.content');
       tabs_and_contents = tabs.add(tabs_contents);
       return tabs_links.click(function(event) {
-        var previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_and_content, this_tab_content;
+        var change_tab, previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_content, trigger_after_events, trigger_before_events;
         this_link = $(this);
         if (tab_type_of(this_link) !== 'link') {
           event.preventDefault();
           this_tab = this_link.parent();
-          if (!this_tab.is('.active')) {
+          if (!this_tab.is('.active') && !this_link.is('.ajax-loading')) {
             this_tab_content = tabs_contents.filter("#" + (content_id_from(this_link)));
-            this_tab_and_content = this_tab.add(this_tab_content);
             previous_active_tab = tabs.filter('.active');
             previous_active_tab_content = tabs_contents.filter('.active');
-            previous_active_tab_content.trigger(before_deactivate_event);
-            this_tab_content.trigger(before_activate_event);
-            tabs_and_contents.removeClass('active').addClass('hidden');
-            this_tab_and_content.removeClass('hidden').addClass('active');
-            previous_active_tab_content.trigger(after_deactivate_event);
-            return this_tab_content.trigger(after_activate_event);
+            trigger_before_events = function() {
+              previous_active_tab_content.trigger('bettertabs-before-deactivate');
+              return this_tab_content.trigger('bettertabs-before-activate');
+            };
+            trigger_after_events = function() {
+              previous_active_tab_content.trigger('bettertabs-after-deactivate');
+              return this_tab_content.trigger('bettertabs-after-activate');
+            };
+            change_tab = function() {
+              tabs_and_contents.removeClass('active').addClass('hidden');
+              this_tab.removeClass('hidden').addClass('active');
+              return this_tab_content.removeClass('hidden').addClass('active');
+            };
+            trigger_before_events();
+            if (tab_type_of(this_link) === 'ajax') {
+              this_link.addClass('ajax-loading');
+              return this_tab_content.load(this_link.attr('href'), function() {
+                this_link.removeClass('ajax-loading');
+                change_tab();
+                return trigger_after_events();
+              });
+            } else {
+              change_tab();
+              return trigger_after_events();
+            }
           }
         }
       });

@@ -1,7 +1,7 @@
 %h2 Testing static tabs
 = bettertabs :static do |tab|
-  = tab.static :tab1 do
-    Content for tab1
-  = tab.static :tab2 do
-    Content for tab2
-  = tab.static :tab_content # should render partial 'tab_content'
+  = tab.static :static_tab_1 do
+    Content for static_tab_1
+  = tab.static :static_tab_2 do
+    Content for static_tab_2
+  = tab.static :tab_content, 'Static Tab 3' # should render partial 'tab_content'

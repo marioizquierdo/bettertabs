@@ -22,12 +22,7 @@ show_content_id_attr = 'data-show-content-id' # attribute on tab links that indi
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
-before_deactivate_event = 'bettertabs-before-deactivate'
-before_activate_event = 'bettertabs-before-activate'
-after_deactivate_event = 'bettertabs-after-deactivate'
-after_activate_event = 'bettertabs-after-activate'
-
-$.fn.bettertabs = () ->
+$.fn.bettertabs = ->
   @each ->
     mytabs = $(this)
     tabs = mytabs.find 'ul.tabs > li'
@@ -40,21 +35,41 @@ $.fn.bettertabs = () ->
       if tab_type_of(this_link) isnt 'link'
         event.preventDefault()
         this_tab = this_link.parent()
-        if not this_tab.is('.active')
+        if not this_tab.is('.active') and not this_link.is('.ajax-loading')
           this_tab_content = tabs_contents.filter "##{content_id_from this_link}"
-          this_tab_and_content = this_tab.add this_tab_content
           previous_active_tab = tabs.filter '.active'
           previous_active_tab_content = tabs_contents.filter '.active'
+          
+          trigger_before_events = -> 
+            previous_active_tab_content.trigger 'bettertabs-before-deactivate'
+            this_tab_content.trigger 'bettertabs-before-activate'
+
+          trigger_after_events = ->
+            previous_active_tab_content.trigger 'bettertabs-after-deactivate'
+            this_tab_content.trigger 'bettertabs-after-activate'
+            
+          change_tab = ->
+            tabs_and_contents.removeClass('active').addClass('hidden')
+            this_tab.removeClass('hidden').addClass('active')
+            this_tab_content.removeClass('hidden').addClass('active')
+          
+          #---
+          trigger_before_events()
+          if tab_type_of(this_link) is 'ajax'
+            this_link.addClass('ajax-loading')
+            this_tab_content.load this_link.attr('href'), ->
+              this_link.removeClass('ajax-loading')
+              change_tab()
+              trigger_after_events()
+          else
+            change_tab()
+            trigger_after_events()
+          
+          
       
-          # trigger before-events
-          previous_active_tab_content.trigger before_deactivate_event
-          this_tab_content.trigger before_activate_event
-      
-          # Activate selected tab content
-          tabs_and_contents.removeClass('active').addClass('hidden')
-          this_tab_and_content.removeClass('hidden').addClass('active')
-      
-          # trigger after-events
-          previous_active_tab_content.trigger after_deactivate_event
-          this_tab_content.trigger after_activate_event
+          
+          
+
+
+
 
