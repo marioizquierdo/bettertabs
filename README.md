@@ -6,29 +6,28 @@ We know that splitting content into several tabs is easy, but doing well, clean,
 Bettertabs is a helper for Rails that renders the markup for a tabbed area in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
 
-## Important NOTE ##
-This gem is in its initial development phase. Not ready to use yet.
+## Features and Key Points ##
 
-
-## Requirements: ##
-  * Ruby 1.9.2
-  * Rails 3
-  * Bettertabs jQuery plugin (that requires jQuery) (TODO: create the plugin)
-  
-Although you can use bettertabs without javascript, and also should be possible to use another javascript for this, since the bettertabs helper only generates the appropiate markup.
-
-## Key Points ##
-
+  * Generate markup with a rails helper and add JavaScript behavior with a jQuery plugin
   * Simplicity: Easy to install and easy to use
   * Forces you to DRY-up your views for your tabbed content
   * Forces you to make it awesome accessible and usable:
     * Designed to work with and without JavaScript
-    * When click on a tab, the address bar url is changed, so:
+    * When click on a tab, the address bar url is changed (feature supported only in HTML5 browsers), so:
       * The browser's back and reload buttons will still work as expected
       * All tabbed sections can be permalinked, keeping the selected tab
   * Flexible and customizable
   * Makes testing views simple. Because it works without javascript, you can assert view components with the rails built-in functional and integration tests.
   * The CSS styles are up to you.
+
+
+## Requirements: ##
+  * Ruby 1.9.2
+  * Rails 3
+  * The [Bettertabs jQuery plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js) (that requires [jQuery](http://jquery.com/) 1.3, 1.4 or 1.5)
+
+Although you can use bettertabs without javascript, and also should be possible to use another javascript for this, since the bettertabs helper only generates the appropiate markup.
+
 
 ## Install ##
 
@@ -37,9 +36,12 @@ Gem dependency. Add bettertabs to your gem file and run `bundle install`.
     gem 'bettertabs'
   
 
-TODO: install BetterTabs jQuery plugin
-TODO: instructions to install in Rails 2
-  
+Download the [bettertabs.jquery.min plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js) (or the [uncompressed version](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.js)), put it in your `public/javascripts` folder and include it in your layout after the jQuery library, for example:
+
+    <%= javascript_include_tag 'jquery', 'rails', 'jquery.bettertabs.min' %>
+
+Now you can use the `bettertabs` helper as in the examples below.
+    
 
 ## Usage and examples ##
 
@@ -247,15 +249,10 @@ You can write your controller code as follows, assuming that bettertabs_id is :e
 
 ## TODO ##
 
-  * Create a Rails testing application.
-    * Start with manual testing, but create a spec sheet to assert.
-    * Later, it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)
-    * Ensure that bettertabs work with ERB and ruby 1.8.x
-  * Add the JavaScript functionality
-    * Find a jQuery plugin to handle address bar url change, just like Github does.
-    * Create bettertabs jQuery plugin
-  * Improve examples and documentation in this Readme file. Keep it simple.
-  * Create a basic CSS stylesheet that may serve as base
+  * Improve the Rails testing application.
+    * it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)
+    * Try to make it work with ruby 1.8.x
+  * Create a basic CSS stylesheet that may serve as base (and add the links here in the documentation)
   
   
 ## Current Spec sheet (will become automatic tests) ##
