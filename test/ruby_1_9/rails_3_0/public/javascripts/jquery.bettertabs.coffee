@@ -24,43 +24,13 @@ show_content_id_attr = 'data-show-content-id' # attribute on tab links that indi
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
-first_active_tabs = $() # will contain each first_active_tab included in the page
-
-# URL change
-History = window.History
-using_historyjs = !!History?.enabled # Check History.js included
-if using_historyjs # With History.js, we can use pushState and revert when click the back button.
-  listen_statechange = on
-  allow_change_url = on
-  initial_state_id = History.getState().id
-  
-  History.Adapter.bind window, 'statechange', ->
-    if listen_statechange is on
-      state = History.getState()
-      History.log state.data, state.title, state.url
-      
-      tab = if state.id is initial_state_id then first_active_tabs else 
-        if state.data['bettertabs_tab_id']? then $("##{state.data['bettertabs_tab_id']}") else $()
-      allow_change_url = off
-      tab.children('a').click()
-      allow_change_url = on
-
-  change_url = ($link) ->
-    if allow_change_url is on
-      listen_statechange = off
-      History.pushState {'bettertabs_tab_id': $link.parent().attr('id')}, document.title, $link.attr('href')
-      listen_statechange = on
-
-else
-
-  # Without History.js, we can use replaceState for HTML5 browsers, and just ignore for old browsers (no change url support).
-  # This will work on last Firefox and Chrome browsers, but I could not find a easy way to listen the popstate event,
-  # so is better not to use pushState (because we can no revert to previous stata), replaceState just works fine.
-  change_url = ($link) ->
-    if history? and history.replaceState?
-      url = $link.attr 'href'
-      history.replaceState null, document.title, url
-
+change_url = ($link) ->
+  # Use replaceState for HTML5 browsers, and just ignore for old browsers (no change url support).
+  # This will work on last modern browsers, but I could not find a neasy way to listen the popstate event,
+  # so better not to use pushState (because we can't safely revert to previous state), replaceState just works fine.
+  if history? and history.replaceState?
+    url = $link.attr 'href'
+    history.replaceState null, document.title, url
 
 $.fn.bettertabs = ->
   @each ->
@@ -69,8 +39,6 @@ $.fn.bettertabs = ->
     tabs_links = mytabs.find 'ul.tabs > li > a'
     tabs_contents = mytabs.children '.content'
     tabs_and_contents = tabs.add tabs_contents
-    first_active_tab = tabs.filter '.active'
-    first_active_tabs = first_active_tabs.add(first_active_tab)
     
     tabs_links.click (event) ->
       this_link = $(this)

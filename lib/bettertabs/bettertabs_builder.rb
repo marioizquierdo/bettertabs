@@ -94,7 +94,7 @@ class BettertabsBuilder
     
       # Wrapper
       @wrapper_html_options ||= {}
-      @wrapper_html_options[:"data-initial-active-tab-id"] = @selected_tab_id
+      @wrapper_html_options[:"data-initial-active-tab-id"] = tab_html_id_for @selected_tab_id
       tag(:div, @wrapper_html_options) do
       
         # Tabs list

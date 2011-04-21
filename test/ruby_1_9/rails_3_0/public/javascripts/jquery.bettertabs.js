@@ -16,7 +16,7 @@
       'bettertabs-after-activate':      fired on content that was activated
       'bettertabs-after-ajax-loading':  fired on content after it was loaded via ajax
 
-  */  var $, History, allow_change_url, change_url, content_id_from, first_active_tabs, initial_state_id, listen_statechange, show_content_id_attr, tab_type_attr, tab_type_of, using_historyjs;
+  */  var $, change_url, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
   tab_type_attr = 'data-tab-type';
   show_content_id_attr = 'data-show-content-id';
@@ -26,52 +26,21 @@
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
   };
-  first_active_tabs = $();
-  History = window.History;
-  using_historyjs = !!(History != null ? History.enabled : void 0);
-  if (using_historyjs) {
-    listen_statechange = true;
-    allow_change_url = true;
-    initial_state_id = History.getState().id;
-    History.Adapter.bind(window, 'statechange', function() {
-      var state, tab;
-      if (listen_statechange === true) {
-        state = History.getState();
-        History.log(state.data, state.title, state.url);
-        tab = state.id === initial_state_id ? first_active_tabs : state.data['bettertabs_tab_id'] != null ? $("#" + state.data['bettertabs_tab_id']) : $();
-        allow_change_url = false;
-        tab.children('a').click();
-        return allow_change_url = true;
-      }
-    });
-    change_url = function($link) {
-      if (allow_change_url === true) {
-        listen_statechange = false;
-        History.pushState({
-          'bettertabs_tab_id': $link.parent().attr('id')
-        }, document.title, $link.attr('href'));
-        return listen_statechange = true;
-      }
-    };
-  } else {
-    change_url = function($link) {
-      var url;
-      if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
-        url = $link.attr('href');
-        return history.replaceState(null, document.title, url);
-      }
-    };
-  }
+  change_url = function($link) {
+    var url;
+    if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
+      url = $link.attr('href');
+      return history.replaceState(null, document.title, url);
+    }
+  };
   $.fn.bettertabs = function() {
     return this.each(function() {
-      var first_active_tab, mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
+      var mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
       mytabs = $(this);
       tabs = mytabs.find('ul.tabs > li');
       tabs_links = mytabs.find('ul.tabs > li > a');
       tabs_contents = mytabs.children('.content');
       tabs_and_contents = tabs.add(tabs_contents);
-      first_active_tab = tabs.filter('.active');
-      first_active_tabs = first_active_tabs.add(first_active_tab);
       return tabs_links.click(function(event) {
         var activate_tab_and_content, previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_content;
         this_link = $(this);
