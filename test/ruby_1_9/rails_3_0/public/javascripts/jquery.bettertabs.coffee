@@ -24,21 +24,32 @@ show_content_id_attr = 'data-show-content-id' # attribute on tab links that indi
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
-first_active_tabs = $() # will add each first_active_tab of each bettertabs included in the page
+first_active_tabs = $() # will contain each first_active_tab included in the page
 
 # URL change
 History = window.History
 using_historyjs = !!History?.enabled # Check History.js included
 if using_historyjs # With History.js, we can use pushState and revert when click the back button.
-
+  listen_statechange = on
+  allow_change_url = on
+  initial_state_id = History.getState().id
+  
   History.Adapter.bind window, 'statechange', ->
-    state = History.getState()
-    tab = if state.data['tab_id'] then $("##{state.data.tab_id}") else first_active_tabs
-    tab.children('a').click()
+    if listen_statechange is on
+      state = History.getState()
+      History.log state.data, state.title, state.url
+      
+      tab = if state.id is initial_state_id then first_active_tabs else 
+        if state.data['bettertabs_tab_id']? then $("##{state.data['bettertabs_tab_id']}") else $()
+      allow_change_url = off
+      tab.children('a').click()
+      allow_change_url = on
 
   change_url = ($link) ->
-    url = $link.attr 'href'
-    History.pushState { 'tab_id': $link.parent().attr('id') }, document.title, url
+    if allow_change_url is on
+      listen_statechange = off
+      History.pushState {'bettertabs_tab_id': $link.parent().attr('id')}, document.title, $link.attr('href')
+      listen_statechange = on
 
 else
 
