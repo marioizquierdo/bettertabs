@@ -24,9 +24,32 @@ show_content_id_attr = 'data-show-content-id' # attribute on tab links that indi
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
-change_url = (url) ->
-  if history? and history.replaceState? # use pushState for HTML5 browsers, ignore for old browsers (althoug we could use History.js)
-    history.replaceState null, document.title, url
+first_active_tabs = $() # will add each first_active_tab of each bettertabs included in the page
+
+# URL change
+History = window.History
+using_historyjs = !!History?.enabled # Check History.js included
+if using_historyjs # With History.js, we can use pushState and revert when click the back button.
+
+  History.Adapter.bind window, 'statechange', ->
+    state = History.getState()
+    tab = if state.data['tab_id'] then $("##{state.data.tab_id}") else first_active_tabs
+    tab.children('a').click()
+
+  change_url = ($link) ->
+    url = $link.attr 'href'
+    History.pushState { 'tab_id': $link.parent().attr('id') }, document.title, url
+
+else
+
+  # Without History.js, we can use replaceState for HTML5 browsers, and just ignore for old browsers (no change url support).
+  # This will work on last Firefox and Chrome browsers, but I could not find a easy way to listen the popstate event,
+  # so is better not to use pushState (because we can no revert to previous stata), replaceState just works fine.
+  change_url = ($link) ->
+    if history? and history.replaceState?
+      url = $link.attr 'href'
+      history.replaceState null, document.title, url
+
 
 $.fn.bettertabs = ->
   @each ->
@@ -35,6 +58,8 @@ $.fn.bettertabs = ->
     tabs_links = mytabs.find 'ul.tabs > li > a'
     tabs_contents = mytabs.children '.content'
     tabs_and_contents = tabs.add tabs_contents
+    first_active_tab = tabs.filter '.active'
+    first_active_tabs = first_active_tabs.add(first_active_tab)
     
     tabs_links.click (event) ->
       this_link = $(this)
@@ -51,7 +76,7 @@ $.fn.bettertabs = ->
             this_tab_content.removeClass('hidden').addClass('active')
             previous_active_tab_content.trigger 'bettertabs-after-deactivate'
             this_tab_content.trigger 'bettertabs-after-activate'
-            change_url this_link.attr('href')
+            change_url this_link
           
           previous_active_tab_content.trigger 'bettertabs-before-deactivate'
           this_tab_content.trigger 'bettertabs-before-activate'

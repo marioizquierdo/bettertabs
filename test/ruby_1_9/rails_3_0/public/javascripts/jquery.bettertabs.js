@@ -16,7 +16,7 @@
       'bettertabs-after-activate':      fired on content that was activated
       'bettertabs-after-ajax-loading':  fired on content after it was loaded via ajax
 
-  */  var $, change_url, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
+  */  var $, History, change_url, content_id_from, first_active_tabs, show_content_id_attr, tab_type_attr, tab_type_of, using_historyjs;
   $ = jQuery;
   tab_type_attr = 'data-tab-type';
   show_content_id_attr = 'data-show-content-id';
@@ -26,19 +26,42 @@
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
   };
-  change_url = function(url) {
-    if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
-      return history.replaceState(null, document.title, url);
-    }
-  };
+  first_active_tabs = $();
+  History = window.History;
+  using_historyjs = !!(History != null ? History.enabled : void 0);
+  if (using_historyjs) {
+    History.Adapter.bind(window, 'statechange', function() {
+      var state, tab;
+      state = History.getState();
+      tab = state.data['tab_id'] ? $("#" + state.data.tab_id) : first_active_tabs;
+      return tab.children('a').click();
+    });
+    change_url = function($link) {
+      var url;
+      url = $link.attr('href');
+      return History.pushState({
+        'tab_id': $link.parent().attr('id')
+      }, document.title, url);
+    };
+  } else {
+    change_url = function($link) {
+      var url;
+      if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
+        url = $link.attr('href');
+        return history.replaceState(null, document.title, url);
+      }
+    };
+  }
   $.fn.bettertabs = function() {
     return this.each(function() {
-      var mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
+      var first_active_tab, mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
       mytabs = $(this);
       tabs = mytabs.find('ul.tabs > li');
       tabs_links = mytabs.find('ul.tabs > li > a');
       tabs_contents = mytabs.children('.content');
       tabs_and_contents = tabs.add(tabs_contents);
+      first_active_tab = tabs.filter('.active');
+      first_active_tabs = first_active_tabs.add(first_active_tab);
       return tabs_links.click(function(event) {
         var activate_tab_and_content, previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_content;
         this_link = $(this);
@@ -55,7 +78,7 @@
               this_tab_content.removeClass('hidden').addClass('active');
               previous_active_tab_content.trigger('bettertabs-after-deactivate');
               this_tab_content.trigger('bettertabs-after-activate');
-              return change_url(this_link.attr('href'));
+              return change_url(this_link);
             };
             previous_active_tab_content.trigger('bettertabs-before-deactivate');
             this_tab_content.trigger('bettertabs-before-activate');
