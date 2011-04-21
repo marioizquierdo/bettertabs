@@ -1,5 +1,5 @@
 ###
-Bettertabs jQuery plugin v0.1
+Bettertabs jQuery plugin v1.0
 
 jQuery(selector).bettertabs(); adds javascript to change content when click on tabs.
 
