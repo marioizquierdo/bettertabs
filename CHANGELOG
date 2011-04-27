@@ -7,6 +7,7 @@ Bettertabs Changelog
   * Tag v1.1
   * bettertabs helper :class html_option replace the 'bettertabs' default class instead of adding it (there was no way to remove that class).
   * Added some CSS examples and documentation (REAMDE.md)
+  * Bugfix: don't add .hidden CSS class to non active tabs (it should only be added to non active content).
   * ... in process
   
 2011-04-22  Mario Izquierdo Martinez <tothemario@gmail.com>

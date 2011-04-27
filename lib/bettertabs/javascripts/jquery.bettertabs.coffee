@@ -21,6 +21,7 @@ $ = jQuery
 
 tab_type_attr = 'data-tab-type' # attribute on tab links that indicate the tab type
 show_content_id_attr = 'data-show-content-id' # attribute on tab links that indicate the related content id
+ajax_url_attr = 'data-ajax-url' # attribute on ajax tab liks with the ajax href
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
@@ -50,8 +51,9 @@ $.fn.bettertabs = ->
           previous_active_tab = tabs.filter '.active'
           previous_active_tab_content = tabs_contents.filter '.active'
           activate_tab_and_content = ->
-            tabs_and_contents.removeClass('active').addClass('hidden')
-            this_tab.removeClass('hidden').addClass('active')
+            tabs.removeClass('active')
+            tabs_contents.removeClass('active').addClass('hidden')
+            this_tab.addClass('active')
             this_tab_content.removeClass('hidden').addClass('active')
             previous_active_tab_content.trigger 'bettertabs-after-deactivate'
             this_tab_content.trigger 'bettertabs-after-activate'
@@ -63,7 +65,7 @@ $.fn.bettertabs = ->
           if tab_type_of(this_link) is 'ajax' and not this_link.data('content-loaded-already')?
             this_link.addClass('ajax-loading')
             this_tab_content.trigger 'bettertabs-before-ajax-loading'
-            this_tab_content.load this_link.attr('href'), ->
+            this_tab_content.load this_link.attr(ajax_url_attr), ->
               this_link.removeClass('ajax-loading')
               this_link.data('content-loaded-already', yes)
               this_tab_content.trigger 'bettertabs-after-ajax-loading'

@@ -42,8 +42,8 @@ describe "Bettertabs requests" do
     
     it "should render all content even for hidden tabs" do
       get '/bettertabs/static'
-      response.body.should include("Content for tab1")
-      response.body.should include("Content for tab2")
+      response.body.should include("Content for static_tab_1")
+      response.body.should include("Content for static_tab_2")
       response.body.should include("tab_content partial content")
     end
   end
