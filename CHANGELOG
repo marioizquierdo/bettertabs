@@ -1,0 +1,24 @@
+Bettertabs Changelog
+====================
+
+
+2011-04-27  Mario Izquierdo Martinez <tothemario@gmail.com>
+  
+  * Tag v1.1
+  * bettertabs helper :class html_option replace the 'bettertabs' default class instead of adding it (there was no way to remove that class).
+  * Added some CSS examples and documentation (REAMDE.md)
+  * ... in process
+  
+2011-04-22  Mario Izquierdo Martinez <tothemario@gmail.com>
+
+  * Tag v1.0
+  * bettertabs rails helper, with static, link and ajax tabs
+  * jquery.bettertabs plugin, that activate the clicked tab, loads ajax content and change the url using HTML history.replaceState() javascript method.
+  * README.md documentation improved with examples
+  * Rails3 (ruby 1.9.2) test application (in the test folder) with some use cases and some basic rspec tests.
+  
+2011-03-31  Mario Izquierdo Martinez <tothemario@gmail.com>
+
+  * Tag v0.0.1
+  * Initial development and structure for the gem
+  * Initial documentation (README.md file)
