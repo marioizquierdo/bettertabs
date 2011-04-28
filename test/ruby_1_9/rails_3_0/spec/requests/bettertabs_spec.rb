@@ -35,50 +35,78 @@ require 'spec_helper'
 
 describe "Bettertabs requests" do
   describe "GET /bettertabs/static" do
+    before(:all) { get '/bettertabs/static' } 
+    
     it "has a 200 status code" do
-      get '/bettertabs/static'
       response.status.should be(200)
     end
     
     it "should render all content even for hidden tabs" do
-      get '/bettertabs/static'
       response.body.should include("Content for static_tab_1")
       response.body.should include("Content for static_tab_2")
       response.body.should include("tab_content partial content")
     end
+    
+    it "should not include the attribute data-ajax-url in static tabs" do
+      response.body.should_not include("data-ajax-url")
+    end
   end
   
   describe "GET /bettertabs/link_tab_1" do
+    before(:all) { get '/bettertabs/link_tab_1' } 
     it "has a 200 status code" do
-      get '/bettertabs/link_tab_1'
       response.status.should be(200)
     end
+    
+    it "should not include the attribute data-ajax-url in link tabs" do
+      response.body.should_not include("data-ajax-url")
+    end
+    
   end
 
   describe "GET /bettertabs/link_tab_2" do
+    before(:all) { get '/bettertabs/link_tab_2' } 
     it "has a 200 status code" do
-      get '/bettertabs/link_tab_2'
       response.status.should be(200)
     end
   end
 
   describe "GET /bettertabs/ajax" do
+    before(:all) { get '/bettertabs/ajax' } 
     it "has a 200 status code" do
-      get '/bettertabs/ajax'
       response.status.should be(200)
+    end
+    
+    it "should include the attribute data-ajax-url in ajax tabs" do
+      response.body.should include("data-ajax-url")
+    end
+    
+    it "should include the default ajax=true extra param in the data-ajax-url" do
+      response.body.should include("data-ajax-url=\"/bettertabs/ajax?ajax_selected_tab=ajax_tab_2&amp;ajax=true\"")
+    end
+    
+    it "should render only the selected tab content" do
+      response.body.should include("Content for the ajax_tab_1")
+      response.body.should_not include("Content for the ajax_tab_2")
+    end
+    
+    it "should select another tab if requested in the URL" do
+      get '/bettertabs/ajax?ajax_selected_tab=ajax_tab_2'
+      response.body.should_not include("Content for the ajax_tab_1")
+      response.body.should include("Content for the ajax_tab_2")
     end
   end
   
   describe "GET /bettertabs/mixed" do
+    before(:all) { get '/bettertabs/mixed' } 
     it "has a 200 status code" do
-      get '/bettertabs/mixed'
       response.status.should be(200)
     end
   end
   
   describe "GET /bettertabs/mixed_with_erb" do
+    before(:all) { get '/bettertabs/mixed_with_erb' } 
     it "has a 200 status code" do
-      get '/bettertabs/mixed_with_erb'
       response.status.should be(200)
     end
   end 

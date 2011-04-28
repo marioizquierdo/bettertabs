@@ -46,7 +46,7 @@ class BettertabsBuilder
     url = options.delete(:url) || { :"#{@bettertabs_id}_selected_tab" => tab_id }
     tab_type = (options.delete(:tab_type) || TAB_TYPE_STATIC).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
-    ajax_url = options.delete(:ajax_url) || url_for_ajax(options) if tab_type == TAB_TYPE_AJAX
+    ajax_url = options.delete(:ajax_url) || url_for_ajax(url) if tab_type == TAB_TYPE_AJAX
     @selected_tab_id ||= tab_id # defaults to first tab
     
     if @render_only_active_content
@@ -172,7 +172,7 @@ class BettertabsBuilder
     begin
       ajax_param = 'ajax=true'
       uri = URI.parse original_url # URI from ruby standard library
-      uri.query = uri.query.blank? ? ajax_param : "#{uri.query}&#{ajax_param}"
+      uri.query = uri.query.blank? ? ajax_param : "#{uri.query}&#{ajax_param}".html_safe
       uri.to_s
     rescue URI::InvalidURIError
       original_url
