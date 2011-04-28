@@ -1,4 +1,5 @@
 class BettertabsBuilder
+  require 'uri' # from standard library
   
   TAB_TYPE_STATIC = :static
   TAB_TYPE_LINK = :link
@@ -45,7 +46,7 @@ class BettertabsBuilder
     url = options.delete(:url) || { :"#{@bettertabs_id}_selected_tab" => tab_id }
     tab_type = (options.delete(:tab_type) || TAB_TYPE_STATIC).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
-    ajax_url = options.delete(:ajax_url) || "#{url_for url}#ajax=true" if tab_type == TAB_TYPE_AJAX
+    ajax_url = options.delete(:ajax_url) || url_for_ajax(options) if tab_type == TAB_TYPE_AJAX
     @selected_tab_id ||= tab_id # defaults to first tab
     
     if @render_only_active_content
@@ -125,16 +126,6 @@ class BettertabsBuilder
   
   private
   
-  # Alias of @template.content_tag
-  def tag(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
-    @template.content_tag(name, content_or_options_with_block, options, escape, &block)
-  end
-  
-  # Wraps javascript code inside a javascript_tag using the jQuery(function($){ ... }); on init call.
-  def jquery_tag(jquery_code)
-    @template.javascript_tag("jQuery(function($){ #{ jquery_code } });")
-  end
-  
   # Get the options hash from an array of args. If options are not present, create them and initialize to {}
   def get_options(args)
     args << {} unless args.last.is_a?(Hash)
@@ -159,6 +150,33 @@ class BettertabsBuilder
   # Content html id
   def content_html_id_for(tab_id)
     "#{tab_id}_#{@bettertabs_id}_content"
+  end
+  
+  # Alias of @template.content_tag
+  def tag(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
+    @template.content_tag(name, content_or_options_with_block, options, escape, &block)
+  end
+  
+  # Wraps javascript code inside a javascript_tag using the jQuery(function($){ ... }); on init call.
+  def jquery_tag(jquery_code)
+    @template.javascript_tag("jQuery(function($){ #{ jquery_code } });")
+  end
+  
+  # Uses @template.url_for() to create the string url, and then URI.parse to add the ajax=true extra param.
+  # This "ajax=true" extra param is important for two reasons:
+  #   * It makes easier from the controller to know when a request is ajax or not.
+  #   * It prevents the browser cache to be populated with the ajax response in the same URL as the complete page,
+  #     otherwhise when the user makes an ajax call, goes to another page and click the back button they see only the ajax response (browsers bug?).
+  def url_for_ajax(options)
+    original_url = @template.url_for(options)
+    begin
+      ajax_param = 'ajax=true'
+      uri = URI.parse original_url # URI from ruby standard library
+      uri.query = uri.query.blank? ? ajax_param : "#{uri.query}&#{ajax_param}"
+      uri.to_s
+    rescue URI::InvalidURIError
+      original_url
+    end
   end
   
 end

@@ -2,13 +2,18 @@ Bettertabs Changelog
 ====================
 
 
-2011-04-27  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-04-28  Mario Izquierdo Martinez <tothemario@gmail.com>
   
   * Tag v1.1
+  * Added :ajax_url option to tab builder, defaults to :url plus the ajax=true param to prevent browser cache issues.
   * bettertabs helper :class html_option replace the 'bettertabs' default class instead of adding it (there was no way to remove that class).
-  * Added some CSS examples and documentation (REAMDE.md)
   * Bugfix: don't add .hidden CSS class to non active tabs (it should only be added to non active content).
-  * ... in process
+  * Documentation improvement:
+    * Added jquery.bettertabs documentation (REAMDE.md)
+    * Added some CSS examples and documentation (lib/bettertabs/stylesheets/README.md)
+    * README.md review and clean-up, moved examples to EXAMPLES.md.
+    * Added Routes examples (README.md)
+    * Added bettertabs helper documentation (params and options in the method comment)
   
 2011-04-22  Mario Izquierdo Martinez <tothemario@gmail.com>
 
