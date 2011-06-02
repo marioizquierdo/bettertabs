@@ -1,14 +1,16 @@
-Bettertabs
-==========
+Bettertabs for Rails
+====================
 
 We know that splitting content into several tabs is easy, but doing well, clean, DRY, accessible, usable, fast and testable is not so simple after all.
 
 Bettertabs is a helper for Rails that renders the markup for a tabbed area in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
+Easy for beginners, complete for experts.
+
 
 ## Features ##
 
-  * Rails helper to easily generate the tabs and content markup
+  * Rails helper to easily generate tabs and content markup
   * Provides a jQuery plugin to handle the JavaScript behavior
   * Simplicity: Easy to install and easy to use
   * Flexible and customizable
@@ -18,16 +20,16 @@ Bettertabs is a helper for Rails that renders the markup for a tabbed area in a 
     * When click on a tab, the address bar url is changed (only in HTML5 browsers), so:
       * The browser's back and reload buttons will still work as expected
       * All tabbed sections can be permalinked, keeping the selected tab
-  * Makes testing views simple. Because its easy to make it works without javascript, you can assert view components with the rails built-in functional and integration tests.
-  * The CSS styles are up to you.
+  * Makes testing views simple. Because its easy to make it works without javascript, you can assert view components with the rails built-in functional and integration tests
+  * The CSS styles are up to you
 
 
 ## Requirements: ##
   * Ruby 1.9.2
   * Rails 3
-  * The [Bettertabs jQuery plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js) (that requires [jQuery](http://jquery.com/) 1.3, 1.4 or 1.5)
+  * [jQuery](http://jquery.com/) 1.3 or higher, in order to use the [Bettertabs jQuery plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js)
 
-Although you can use bettertabs without javascript, and also it should not be so difficult to create another JavaScript that handle the server side behavior, since the bettertabs helper only generates the appropiate markup.
+Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
 
 
 ## Install ##
@@ -122,34 +124,50 @@ The plugin defines one single jQuery method `jQuery(selector).bettertabs();` tha
 
 This script will take the tab type from each tab link `data-tab-type` attribute (that can be "link", "static" or "ajax"), and will match each tab with its content using the tab link `data-show-content-id` attribute, that is the id of the related content.
 
-Tabs of type "link" will be ignored (no JavaScript), while "static" and "ajax" tabs will change the active content (using the `.active` css class), and also will try to change the current URL.
+Tabs of type "link" will be ignored, while "static" and "ajax" tabs will change the active content (using the `.active` css class), and also will try to change the current URL (browser history state)
 
 
 ### Browser history and url manipulation ###
 
-When activate a tag, the URL is changed using [history.replaceState()](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history), which only works on modern HTM5 browsers (older browsers can not change the URL, and I prefer not trying to use History.js or any other approach to give them support for them).
+When a tab is clicked, the plugin attempts to change the browser url to the tab link url to reflect the page state.
 
-### Manipulating the bettertabs widget from other scripts ###
+To change the url, the plugin defines the method `jQuery.Bettertabs.change_browser_url(new_url)`, that is internally called each time a tab is activated. This method is implemented using [history.replaceState()](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history), which only works on modern HTM5 browsers (older browsers can not change the URL, and I prefer not trying to use History.js or any other approach to give them support for them).
+
+The *jQuery.Bettertabs.change_url(url)* method is public, so it can be reused for other scripts (for example if you want to implement your own ajax pagination links inside the tab, and you want to reflect it in the browser bar). This also means that you can rewrite this method with your own implementation (to use another plugin like [History.js](https://github.com/balupton/history.js), [jQuery BBQ](http://benalman.com/projects/jquery-bbq-plugin/), or [HTML5 pushState](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history) on your own if you want to change the browser url).
+
+
+### Play with the bettertabs widget from other scripts ###
 
 All parts of the bettertabs generated markup are identified using ids, so it is very easy to identify and modify any part of the inner content (just open your firebug and browse the generated markup).
 
-  * To activate a tab, simulate a click on the tab link: `jQuery('#bettertabsid_tabid_tab a').click();`
-  * To hook some behavior when someone clicks on a tab, attach a 'click' handler to the tab link or use any of the provided custom events.
-  * To show a loading clock or any other kind of feedback to the user while ajax is loading, use any of the provided custom events.
+You can interact with the bettertabs widget in the following ways:
+
+  * **Activate a tab**: use the function `jQuery.Bettertabs.select_tab(bettertabsid, tabid);`, for the previous example could be *jQuery.Bettertabs.select_tab('profile_tabs', 'friends');*. You can also just simulate a click on the tab link with `jQuery('#tabid_bettertabsid_tab a').click();`
+  * **Hook some behavior when a tab is clicked**: attach a 'click' handler to the tab link or use any of the provided custom events.
+  * **Show a loading clock while ajax is loading**: or any other kind of feedback to the user, use any of the provided custom events. You can also handle it styling the CSS class `.ajax-loading` that is added to the ajax tab link while ajax content is loading (see the [Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md))
+  * **Change the browser URL**: in the same way the plugin does when a tab is clicked, use `jQuery.Bettertabs.change_browser_url(new_url);`
   
 Custom events that are attached to each tab content:
 
-  * 'bettertabs-before-deactivate':   fired on content that is active and will be deactivated
-  * 'bettertabs-before-activate':     fired on content that will be activated
-  * 'bettertabs-before-ajax-loading': fired on content container that will be activated just before be loaded using ajax
-  * 'bettertabs-after-deactivate':    fired on content that was deactivated
-  * 'bettertabs-after-activate':      fired on content that was activated
-  * 'bettertabs-after-ajax-loading':  fired on content after it was loaded via ajax. Remember that the content is loaded via ajax only once.
-  
-If you want to do something on a content that was just loaded using ajax, you can do something like the following:
+  * *'bettertabs-before-deactivate'*:   fired on content that is active and will be deactivated
+  * *'bettertabs-before-activate'*:     fired on content that will be activated
+  * *'bettertabs-before-ajax-loading'*: fired on content container that will be activated just before be loaded using ajax
+  * *'bettertabs-after-deactivate'*:    fired on content that was deactivated
+  * *'bettertabs-after-activate'*:      fired on content that was activated
+  * *'bettertabs-after-ajax-loading'*:  fired on content after it was loaded via ajax. Remember that the content is loaded via ajax only once.
 
-    $("#bettertabsid_tabid_content").bind('bettertabs-after-ajax-loading', function(){
-      $(this).doSomething();
+Usage example of custom events:
+
+    // Show an alert when the :friends tab content of the :profile_tabs is activated and visible
+    $("#profile_tabs_friends_content").bind('bettertabs-after-activate', function(){
+      alert('friends content is visible');
+    });
+    
+    // Display the $('#loading-clock') element while ajax tabs are loading
+    $("#profile_tabs").bind('bettertabs-before-ajax-loading', function(){
+      $('#loading-clock').show();
+    }).bind('bettertabs-after-ajax-loading', function(){
+      $('#loading-clock').hide();
     });
 
 
@@ -166,8 +184,6 @@ Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/better
 
 ## Future work ##
 
-  * Improve the Rails testing application
-    * it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)
-    * Try to make it work with ruby 1.8.x
-  * Allow disabling the change-url functionality with an option like `:change_browser_url => false`
+  * Improve the Rails testing application: it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)
+  * Try to make it compatible with ruby 1.8.x
   

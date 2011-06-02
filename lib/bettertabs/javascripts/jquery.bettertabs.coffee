@@ -1,7 +1,7 @@
 ###!
  jQuery Bettertabs Plugin
- version: 1.1 (Apr-28-2011)
- @requires jQuery v1.4 or later
+ version: 1.2 (Jun-2-2011)
+ @requires jQuery v1.3 or later
  
  Examples and documentation at: https://github.com/agoragames/bettertabs
  
@@ -19,13 +19,19 @@ ajax_url_attr = 'data-ajax-url' # attribute on ajax tab liks with the ajax href
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
 
-change_url = ($link) ->
-  # Use replaceState for HTML5 browsers, and just ignore for old browsers (no change url support).
-  # This will work on last modern browsers, but I could not find a neasy way to listen the popstate event,
-  # so better not to use pushState (because we can't safely revert to previous state), replaceState just works fine.
-  if history? and history.replaceState?
-    url = $link.attr 'href'
-    history.replaceState null, document.title, url
+# jQuery.Bettertabs API
+$.Bettertabs =
+  # jQuery.Bettertabs.change_browser_url(url) => Replace the browser history state with this new url
+  change_browser_url: (url) ->
+    # Use replaceState for HTML5 browsers, and just ignore for old browsers (no change url support).
+    # This will work on last modern browsers, but I could not find an easy way to listen the popstate event,
+    # so better not to use pushState (because we can't safely revert to previous state), replaceState just works fine.
+    if history? and history.replaceState?
+      history.replaceState null, document.title, url
+      
+  # jQuery.Bettertabs.select_tab(bettertabs_id, tab_id) => click on the tab_id link of the bettertabs_id widget
+  select_tab: (bettertabs_id, tab_id) ->
+    $("##{tab_id}_#{bettertabs_id}_tab a").click()
 
 $.fn.bettertabs = ->
   @each ->
@@ -51,7 +57,7 @@ $.fn.bettertabs = ->
             this_tab_content.removeClass('hidden').addClass('active')
             previous_active_tab_content.trigger 'bettertabs-after-deactivate'
             this_tab_content.trigger 'bettertabs-after-activate'
-            change_url this_link
+            $.Bettertabs.change_browser_url this_link.attr('href')
           
           previous_active_tab_content.trigger 'bettertabs-before-deactivate'
           this_tab_content.trigger 'bettertabs-before-activate'
@@ -66,7 +72,7 @@ $.fn.bettertabs = ->
               activate_tab_and_content()
           else
             activate_tab_and_content()
-
+  return this
 
 
 

@@ -117,8 +117,7 @@ class BettertabsBuilder
              content[:content] # this should be blank unless content[:active] or content[:tab_type] == :static
            end
          end.join.html_safe
-      end.html_safe +
-      jquery_tag("$('##{@bettertabs_id}').bettertabs();")
+      end.html_safe
       
     end
   end
@@ -155,11 +154,6 @@ class BettertabsBuilder
   # Alias of @template.content_tag
   def tag(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
     @template.content_tag(name, content_or_options_with_block, options, escape, &block)
-  end
-  
-  # Wraps javascript code inside a javascript_tag using the jQuery(function($){ ... }); on init call.
-  def jquery_tag(jquery_code)
-    @template.javascript_tag("jQuery(function($){ #{ jquery_code } });")
   end
   
   # Uses @template.url_for() to create the string url, and then URI.parse to add the ajax=true extra param.
