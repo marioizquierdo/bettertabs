@@ -182,6 +182,16 @@ Perhaps the most important CSS rule here is to define `display: none;` for `div.
 Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md) to get a stylesheet that you can use as a starting point.
 
 
+## How to help make Bettertabs even Better ##
+ 
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+
 ## Future work ##
 
   * Improve the Rails testing application: it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)

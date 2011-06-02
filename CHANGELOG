@@ -3,6 +3,11 @@ Bettertabs Changelog
 
 2011-05-02  Mario Izquierdo Martinez <tothemario@gmail.com>
 
+  * Tag v1.2.1
+  * Bugfix on the bettertabs helper inline script
+
+2011-05-02  Mario Izquierdo Martinez <tothemario@gmail.com>
+
   * Tag v1.2
   * Added :attach_jquery_bettertabs_inline option to the helper, defaults to true. If false, do not render the inline script that activates the plugin.
   * Bettertabs jQuery plugin improvement:
