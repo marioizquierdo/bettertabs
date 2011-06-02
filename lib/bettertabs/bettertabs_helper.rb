@@ -19,6 +19,7 @@ module BettertabsHelper
   #                       :selected_tab only defines which tab is selected when no {bettertabs_id}_selected_tab param is present.
   #       * :render_only_active_content => if true, this helper renders only the selected tab contents (no wrapper, no tabs, only content).
   #                       Default to true only if controller.request.xhr? or params[:ajax].present? (true when its an ajax request).
+  #       * :attach_jquery_bettertabs_inline => this helper includes a little inline script to apply the Bettertabs jQuery plugin to this widget. If false, do not render that inline script.
   #       * :class => html class attribute of the wrapper element. By default is 'bettertabs'
   #       * :id => html id attribute of the wrapper element. By default is the bettertabs_id
   #       * Any other option will be used as wrapper elmenet html attribute.

@@ -1,6 +1,14 @@
 Bettertabs Changelog
 ====================
 
+2011-05-02  Mario Izquierdo Martinez <tothemario@gmail.com>
+
+  * Tag v1.2
+  * Added :attach_jquery_bettertabs_inline option to the helper, defaults to true. If false, do not render the inline script that activates the plugin.
+  * Bettertabs jQuery plugin improvement:
+    * Exposed the change_browser_url method to global access in jQuery.Bettertabs.change_browser_url(url), so it can be used and overwritten by other scripts
+    * Created the jQuery.Bettertabs.select_tab(bettertabs_id, tab_id) method to easily select a tab from other scripts
+    * Improved the README.md JavaScript section with more clear examples
 
 2011-04-28  Mario Izquierdo Martinez <tothemario@gmail.com>
   
