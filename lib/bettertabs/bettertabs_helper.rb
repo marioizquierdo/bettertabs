@@ -57,7 +57,7 @@ module BettertabsHelper
     builder = BettertabsBuilder.new(bettertabs_id, self, selected_tab_id, options)
     yield(builder)
     b = builder.render
-    b += javascript_tag("jQuery(function($){ $('##{options[:id]}').bettertabs(); });") if options[:attach_jquery_bettertabs_inline]
+    b += javascript_tag("jQuery(function($){ $('##{options[:id]}').bettertabs(); });") if attach_jquery_bettertabs_inline
     b
   end
   
