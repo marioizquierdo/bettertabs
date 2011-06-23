@@ -3,7 +3,7 @@ Bettertabs Changelog
 
 2011-06-23  Mario Izquierdo Martinez <tothemario@gmail.com>
 
-  * Tag v1.2.2
+  * Tag v1.2.3
   * Tested with Rails 3.0.9 and HAML 3.1.2
   * Bugfix on the bettertabs helper inline script, avoid to add it as an HTML attribute
 
