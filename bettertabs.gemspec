@@ -12,8 +12,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{The better (simple, accessible, usable, flexible and fast) way to split content in tabs for Rails.}
   s.description = %q{Bettertabs Rails helper (and jQuery plugin) defines the markup for a tabbed area in a easy and declarative way, using the appropiate JavaScript but ensuring accessibility and usability, no matter if the content is loaded statically, via ajax or the tabs are links. In the other hand, the CSS styles are up to you. }
 
-  s.rubyforge_project = "bettertabs"
-
   s.files         = `git ls-files`.split("\n")
   s.require_paths = ["lib"]
 end
