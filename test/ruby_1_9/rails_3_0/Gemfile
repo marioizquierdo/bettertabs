@@ -1,8 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.6'
-gem 'haml', '>=3.0.18'
+
+gem 'rails', '3.0.9'
+gem 'rake', '0.9.2'
 gem 'rspec-rails'
+gem 'haml', '3.1.2'
 
 gem 'bettertabs'
 

@@ -53,7 +53,7 @@ module BettertabsHelper
     options[:class] ||= "bettertabs"
     options[:id] ||= bettertabs_id
     options[:render_only_active_content] = controller.request.xhr? unless options.include?(:render_only_active_content)
-    options[:attach_jquery_bettertabs_inline] = true unless options.include?(:attach_jquery_bettertabs_inline)
+    attach_jquery_bettertabs_inline = options.include?(:attach_jquery_bettertabs_inline) ? options.delete(:attach_jquery_bettertabs_inline) : true
     builder = BettertabsBuilder.new(bettertabs_id, self, selected_tab_id, options)
     yield(builder)
     b = builder.render

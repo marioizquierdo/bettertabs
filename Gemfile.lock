@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bettertabs (1.2)
+    bettertabs (1.2.1)
 
 GEM
   remote: http://rubygems.org/
