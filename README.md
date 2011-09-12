@@ -3,31 +3,32 @@ Bettertabs for Rails
 
 We know that splitting content into several tabs is easy, but doing well, clean, DRY, accessible, usable, fast and testable is not so simple after all.
 
-Bettertabs is a helper for Rails that renders the markup for a tabbed area in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
+Bettertabs is a simple engine for Rails that includes a helper and a jquery plugin to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
 Easy for beginners, complete for experts.
 
 
 ## Features ##
 
-  * Rails helper to easily generate tabs and content markup
-  * Provides a jQuery plugin to handle the JavaScript behavior
-  * Simplicity: Easy to install and easy to use
+  * Rails 3.1 Engine that includes:
+    * helper to easily generate tabs and content markup
+    * jQuery plugin to handle the JavaScript behavior
+  * Simplicity: Easy to install, easy to use, easy to update
   * Flexible and customizable
   * Forces you to DRY-up your views for your tabbed content
-  * Forces you to make it awesome accessible and usable:
+  * Forces you to make it very accessible and usable:
     * Designed to work with and without JavaScript
     * When click on a tab, the address bar url is changed (only in HTML5 browsers), so:
       * The browser's back and reload buttons will still work as expected
       * All tabbed sections can be permalinked, keeping the selected tab
-  * Makes testing views simple. Because its easy to make it works without javascript, you can assert view components with the rails built-in functional and integration tests
-  * The CSS styles are up to you
+  * Makes testing views simple. Because its easy to make it working without javascript, you can test view components with the rails built-in functional and integration tests
+  * The CSS styles are up to you, although we include some [reference CSS](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to start with
 
 
 ## Requirements: ##
   * Ruby 1.9.2
-  * Rails 3
-  * [jQuery](http://jquery.com/) 1.3 or higher, in order to use the [Bettertabs jQuery plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js)
+  * Rails 3.1
+  * [jquery-ujs](https://github.com/rails/jquery-ujs) with jQuery 1.3 or higher
 
 Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
 
@@ -37,14 +38,18 @@ Anyway you can use bettertabs without javascript (or use your own javascript han
 Gem dependency. Add bettertabs to your gem file and run `bundle install`.
 
     gem 'bettertabs'
-  
 
-Download the [bettertabs.jquery.min plugin](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js) (or the [uncompressed version](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.js)), put it in your `public/javascripts` folder and include it in your layout after the jQuery library, for example:
+To include the [jquery.bettertabs plugin](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js.coffee)
+add these line to the top of your `app/assets/javascripts/application.js` file:
 
-    <%= javascript_include_tag 'jquery', 'rails', 'jquery.bettertabs.min' %>
+    //= require jquery.bettertabs
 
-Now you can use the `bettertabs` helper as in the examples below.
-    
+Or if you prefer the compressed version:
+
+    //= require jquery.bettertabs.min
+
+This works the same way as [jquery-ujs](https://github.com/rails/jquery-ujs); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
+
 
 ## Usage and examples ##
 
@@ -64,15 +69,15 @@ An usage example should be self explanatory (using HAML, but it also works with 
       = tab.ajax :friends, :partial => 'shared/friends'
       
       = tab.link :groups do
-        =  render :partial => 'groups/user_groups', :locals => {user => @user}
+        =  render :partial => 'groups/user_groups', :locals => { :user => @user }
 
 ### More examples and documentation: ###
 
-  * [EXAMPLES document](https://github.com/agoragames/bettertabs/blob/master/EXAMPLES.md)
-  * [Bettertabs Styles reference guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md)
-  * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/bettertabs_helper.rb) (params and options)
-  * [Rails3 test demo application](https://github.com/agoragames/bettertabs/tree/master/test/ruby_1_9/rails_3_0)
-  * Anyway, don't be afraid of digging into the code, it's very straightforward.
+  * [EXAMPLES document](https://github.com/agoragames/bettertabs/blob/master/doc/EXAMPLES.md)
+  * [Bettertabs Styles reference guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md)
+  * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/app/helpers/bettertabs_helper.rb) (params and options)
+  * [Rails3 test demo application](https://github.com/agoragames/bettertabs/tree/master/spec/dummy)
+  * Anyway, don't be afraid and dig into the code!
   
 
 ## Tabs Routes ##
@@ -106,19 +111,19 @@ So now the tabs links will point to the following URLs:
   * :friends tab href: `/profile/dude/friends`
   
   
-## JavaScript with the jquery.bettertabs plugin ##
+## JavaScript with the jquery.bettertabs plugin #
 
-Installing the `bettertabs` gem in a rails project makes the bettertabs helper instantly available. This helper will generate markup that is prepared to be modified by JavaScript, and also includes an inline script at the bottom:
+The bettertabs helper will generate the needed markup that has an inline script at the bottom:
 
     jQuery(function($){ $('#bettertabs_id').bettertabs(); });
 
-Which expects jQuery and jquery.bettertabs plugin to be loaded.
+Which expects jQuery and jquery.bettertabs plugin to be present.
 
-The jquery.bettertabs plugin can be downloaded directly from the github repo:
+You can see the jquery.bettertabs source code in the github repo:
 
-  * [CoffeeScript version](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.coffee)
-  * [JavaScript (generated by coffee) version](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.js)
-  * [Compressed JavaScript](https://github.com/agoragames/bettertabs/raw/master/lib/bettertabs/javascripts/jquery.bettertabs.min.js)
+  * [CoffeeScript version](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js.coffee)
+  * [JavaScript (generated by coffee) version](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js)
+  * [Compressed JavaScript](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.min.js)
   
 The plugin defines one single jQuery method `jQuery(selector).bettertabs();` that is applied to the generated markup.
 
@@ -144,7 +149,7 @@ You can interact with the bettertabs widget in the following ways:
 
   * **Activate a tab**: use the function `jQuery.Bettertabs.select_tab(bettertabsid, tabid);`, for the previous example could be *jQuery.Bettertabs.select_tab('profile_tabs', 'friends');*. You can also just simulate a click on the tab link with `jQuery('#tabid_bettertabsid_tab a').click();`
   * **Hook some behavior when a tab is clicked**: attach a 'click' handler to the tab link or use any of the provided custom events.
-  * **Show a loading clock while ajax is loading**: or any other kind of feedback to the user, use any of the provided custom events. You can also handle it styling the CSS class `.ajax-loading` that is added to the ajax tab link while ajax content is loading (see the [Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md))
+  * **Show a loading clock while ajax is loading**: or any other kind of feedback to the user, use any of the provided custom events. You can also handle it styling the CSS class `.ajax-loading` that is added to the ajax tab link while ajax content is loading (see the [Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md))
   * **Change the browser URL**: in the same way the plugin does when a tab is clicked, use `jQuery.Bettertabs.change_browser_url(new_url);`
   
 Custom events that are attached to each tab content:
@@ -179,7 +184,7 @@ Perhaps the most important CSS rule here is to define `display: none;` for `div.
 
       div.bettertabs div.content.hidden { display: none; }
 
-Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md) to get a stylesheet that you can use as a starting point.
+Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to get a stylesheet that you can use as a starting point.
 
 
 ## How to help make Bettertabs even Better ##
@@ -194,6 +199,6 @@ Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/better
 
 ## Future work ##
 
-  * Improve the Rails testing application: it should use rspec and capybabra to test even the javascript (http://media.railscasts.com/videos/257_request_specs_and_capybara.mov)
   * Try to make it compatible with ruby 1.8.x
+  * Improve tests to check the JavaScript code (Jasmine, Evergreen, Capybara, whatever)
   

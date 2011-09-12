@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dummy</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+
+<h1>Bettertabs Dummy App</h1>
+<div class="nav">
+  <%= link_to 'static', { action: 'static'}, title: 'Using only static tabs' %> | 
+  <%= link_to 'link', { action: 'link_tab_1'}, title: 'Using only link tabs' %> | 
+  <%= link_to 'ajax', { action: 'ajax'}, title: 'Using only ajax tabs' %> | 
+  <%= link_to 'mixed', { action: 'mixed'}, title: 'Using static, link and ajax tabs in the same widget' %> | 
+  <%= link_to 'mixed (erb)', { action: 'mixed_with_erb'}, title: 'Using static, link and ajax tabs in a ERB template' %>
+</div>
+
+<%= yield %>
+
+</body>
+</html>
