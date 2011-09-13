@@ -1,24 +1,29 @@
 Bettertabs Changelog
 ====================
 
-2011-09-12  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
+
+  * Tag v1.3.1
+  * Add 'active' class to the link element inside the active tag as well as the li element (more easy to style)
+
+2011-09-12  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v1.3
   * Gem converted into a Rails 3.1 Engine that uses the asset pipeline to serve the jquery.bettertabs plugin
   * Test dummy app converted to Rails 3.1
 
-2011-06-23  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-06-23  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v1.2.3
   * Tested with Rails 3.0.9 and HAML 3.1.2
   * Bugfix on the bettertabs helper inline script, avoid to add it as an HTML attribute
 
-2011-05-02  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-05-02  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v1.2.1
   * Bugfix on the bettertabs helper inline script
 
-2011-05-02  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-05-02  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v1.2
   * Added :attach_jquery_bettertabs_inline option to the helper, defaults to true. If false, do not render the inline script that activates the plugin.
@@ -27,7 +32,7 @@ Bettertabs Changelog
     * Created the jQuery.Bettertabs.select_tab(bettertabs_id, tab_id) method to easily select a tab from other scripts
     * Improved the README.md JavaScript section with more clear examples
 
-2011-04-28  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-04-28  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
   
   * Tag v1.1
   * Added :ajax_url option to tab builder, defaults to :url plus the ajax=true param to prevent browser cache issues.
@@ -40,7 +45,7 @@ Bettertabs Changelog
     * Added Routes examples (README.md)
     * Added bettertabs helper documentation (params and options in the method comment)
   
-2011-04-22  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-04-22  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v1.0
   * bettertabs rails helper, with static, link and ajax tabs
@@ -48,7 +53,7 @@ Bettertabs Changelog
   * README.md documentation improved with examples
   * Rails3 (ruby 1.9.2) test application (in the test folder) with some use cases and some basic rspec tests.
   
-2011-03-31  Mario Izquierdo Martinez <tothemario@gmail.com>
+2011-03-31  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
   * Tag v0.0.1
   * Initial development and structure for the gem

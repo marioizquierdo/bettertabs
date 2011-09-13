@@ -19,7 +19,7 @@ will expand in the following markup (html):
     <div id="profile_tabs" data-initial-active-tab-id="profile_tabs_general_tab" class="bettertabs">
       <ul class="tabs">
         <li id="profile_tabs_general_tab" class="active">
-          <a data-tab-type="static" data-show-content-id="profile_tabs" href="/profile/dude/general">General</a>
+          <a class="active" data-tab-type="static" data-show-content-id="profile_tabs" href="/profile/dude/general">General</a>
         </li>
         <li id="profile_tabs_friends_tab">
           <a data-tab-type="ajax" data-show-content-id="profile_tabs" href="/competition/ladder/1234/rules">RULES</a>
@@ -42,17 +42,18 @@ So you can use this structure to access any bettertabs widget element (CSS):
     div.bettertabs ul.tabs li { /* tab item */ }
     div.bettertabs ul.tabs li.active { /* selected tab item */ }
     div.bettertabs ul.tabs li.active a  { /* selected tab link */ }
+    div.bettertabs ul.tabs li a.active  { /* selected tab link */ }
     div.bettertabs ul.tabs li a:link,
     div.bettertabs ul.tabs li a:visited { /* tab link normal state */ }
     div.bettertabs ul.tabs li a:hover {  }
     div.bettertabs ul.tabs li a:active {  }
-    div.bettertabs ul.tabs li a.ajax-loading { /* tab link while ajax loading */ }
+    div.bettertabs ul.tabs li a.ajax-loading { /* tab link while ajax content is loading */ }
 
     div.bettertabs div.content { }
-    div.bettertabs div.content.hidden { /* hidden content. Here you can use the property display: none; */ } 
+    div.bettertabs div.content.hidden { /* hidden content. Here you should set the property display: none; */ } 
     div.bettertabs div.content.active { /* active content */ }
     
-Here you are a simple example of CSS you can use to style up your bettertabs widgets (CSS):
+Here you are a sample of CSS you can use as example to style up your bettertabs widget:
     
     div.bettertabs { margin: 1em; width: 500px; }
 
@@ -66,7 +67,7 @@ Here you are a simple example of CSS you can use to style up your bettertabs wid
       position: relative; top: 1px;
     }
     div.bettertabs ul.tabs li.active { height: 25px; background-color: #eee; border-bottom: none; }
-    div.bettertabs ul.tabs li.active a  { color: black; }
+    div.bettertabs ul.tabs li.active a.active  { color: black; }
 
     div.bettertabs ul.tabs li a { font-size: 80%; text-decoration: none; float: left; }
     div.bettertabs ul.tabs li a:link,
@@ -77,4 +78,59 @@ Here you are a simple example of CSS you can use to style up your bettertabs wid
 
     div.bettertabs div.content { padding: 1em; border: 1px solid #999; background-color: #eee; clear: left; }
     div.bettertabs div.content.hidden { display: none; }
+
+
+And this is the same example but written in SASS:
+
+    div.bettertabs
+      margin: 1em
+      width: 500px
+
+      ul.tabs
+        margin: 0
+        padding: 0
+        position: relative
+      
+        li
+          background-color: #ccc
+          border: 1px solid #999
+          display: inline
+          float: left
+          height: 24px
+          line-height: 24px
+          list-style: none outside none
+          margin-right: .5em
+          padding-right: .5em
+          padding-left: .5em
+          position: relative
+          top: 1px
+      
+          &.active
+            height: 25px
+            background-color: #eee
+            border-bottom: none
+          
+          a
+            font-size: 80%
+            text-decoration: none
+            float: left
+            &.active
+             color: black
+            &:link, &:visited
+              color: #444
+            &:hover
+              color: #000
+            &:active
+              color: #933
+            &.ajax-loading
+              color: #666
+
+      div.content
+        padding: 1em
+        border: 1px solid #999
+        background-color: #eee
+        clear: left
+      
+        &.hidden
+          display: none
 
