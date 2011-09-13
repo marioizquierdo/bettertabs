@@ -4,3 +4,5 @@
   = tab.ajax :ajax_tab_2 do
     Content for the ajax_tab_2
   = tab.ajax :ajax_tab_3, partial: 'tab_content'
+  = tab.ajax :ajax_tab_with_error, 'raise a 500 error' do
+    = raise 'This tab should raise an error, how well was it handled?'

@@ -3,9 +3,11 @@ Bettertabs Changelog
 
 2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
-  * Tag v1.3.4
+  * Tag v1.3.5
   * Add 'active' class to the link element inside the active tag as well as the li element (so it is now more easy to style)
   * When tab-type is ajax, mark the first active link as content-loaded-already to not be loaded again when click later
+  * Ajax error handling: when .load() callback returns a textStatus 'error', the browser is reloaded to better show the error
+  * Bugfix: include other params if present in the default tab link url
 
 2011-09-12  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 

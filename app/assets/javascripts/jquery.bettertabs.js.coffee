@@ -1,6 +1,6 @@
 ###!
  jQuery Bettertabs Plugin
- version: 1.3.4 (Sep-13-2011)
+ version: 1.3.5 (Sep-13-2011)
  @requires jQuery v1.3 or later
  
  Examples and documentation at: https://github.com/agoragames/bettertabs
@@ -71,11 +71,14 @@ $.fn.bettertabs = ->
           if tab_type_of(this_link) is 'ajax' and not this_link.data('content-loaded-already')?
             this_link.addClass('ajax-loading')
             this_tab_content.trigger 'bettertabs-before-ajax-loading'
-            this_tab_content.load this_link.attr(ajax_url_attr), ->
-              this_link.removeClass('ajax-loading')
-              this_link.data('content-loaded-already', yes)
-              this_tab_content.trigger 'bettertabs-after-ajax-loading'
-              activate_tab_and_content()
+            this_tab_content.load this_link.attr(ajax_url_attr), (responseText, textStatus, XMLHttpRequest) ->
+              if textStatus is 'error'
+                window.location = this_link.attr('href')
+              else
+                this_link.removeClass('ajax-loading')
+                this_link.data('content-loaded-already', yes)
+                this_tab_content.trigger 'bettertabs-after-ajax-loading'
+                activate_tab_and_content()
           else
             activate_tab_and_content()
   return this
