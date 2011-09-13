@@ -1,7 +1,7 @@
 (function() {
   /*!
    jQuery Bettertabs Plugin
-   version: 1.3.3 (Sep-13-2011)
+   version: 1.3.4 (Sep-13-2011)
    @requires jQuery v1.3 or later
    
    Examples and documentation at: https://github.com/agoragames/bettertabs
@@ -34,12 +34,16 @@
   };
   $.fn.bettertabs = function() {
     this.each(function() {
-      var mytabs, tabs, tabs_and_contents, tabs_contents, tabs_links;
-      mytabs = $(this);
-      tabs = mytabs.find('ul.tabs > li');
-      tabs_links = mytabs.find('ul.tabs > li > a');
-      tabs_contents = mytabs.children('.content');
+      var active_tab_link, tabs, tabs_and_contents, tabs_contents, tabs_links, wrapper;
+      wrapper = $(this);
+      tabs = wrapper.find('ul.tabs > li');
+      tabs_links = wrapper.find('ul.tabs > li > a');
+      tabs_contents = wrapper.children('.content');
       tabs_and_contents = tabs.add(tabs_contents);
+      active_tab_link = tabs_links.filter('.active');
+      if (tab_type_of(active_tab_link) === 'ajax') {
+        active_tab_link.data('content-loaded-already', true);
+      }
       return tabs_links.click(function(event) {
         var activate_tab_and_content, previous_active_tab, previous_active_tab_content, this_link, this_tab, this_tab_content;
         this_link = $(this);

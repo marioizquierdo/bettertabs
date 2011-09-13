@@ -3,13 +3,9 @@ Bettertabs Changelog
 
 2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
-  * Tag v1.3.3
-  * Bugfix and update the jquery.bettertabs plugin to update the link .active class a well as li element
-
-2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
-
-  * Tag v1.3.1
-  * Add 'active' class to the link element inside the active tag as well as the li element (more easy to style)
+  * Tag v1.3.4
+  * Add 'active' class to the link element inside the active tag as well as the li element (so it is now more easy to style)
+  * When tab-type is ajax, mark the first active link as content-loaded-already to not be loaded again when click later
 
 2011-09-12  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
