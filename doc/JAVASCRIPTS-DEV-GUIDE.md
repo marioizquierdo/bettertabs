@@ -15,11 +15,10 @@ You can then install CoffeeScript with npm:
     npm install coffee-script
     
 
-Then you will be able to compile `jquery.bettertabs.coffee` into `jquery.bettertabs.js` using the coffee command:
+Then you will be able to compile `jquery.bettertabs.js.coffee` into `jquery.bettertabs.js` using the coffee command:
 
-    coffee --watch --compile jquery.bettertabs.coffee
-    
-With this, each time you save the `jquery.bettertabs.coffee` file, `jquery.bettertabs.js` will be automatically updated.
+    cd app/assets/javascripts
+    coffee --print jquery.bettertabs.js.coffee > jquery.bettertabs.js
 
 
 ## JavaScript Compressor ##

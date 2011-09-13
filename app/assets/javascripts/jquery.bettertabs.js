@@ -3,14 +3,15 @@
    jQuery Bettertabs Plugin
    version: 1.3.1 (Sep-13-2011)
    @requires jQuery v1.3 or later
-
+   
    Examples and documentation at: https://github.com/agoragames/bettertabs
-
+   
    Copyright (c) 2011 Mario Izquierdo (tothemario@gmail.com)
    Dual licensed under the MIT and GPL licenses:
      http://www.opensource.org/licenses/mit-license.php
      http://www.gnu.org/licenses/gpl.html
-  */  var $, ajax_url_attr, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
+  */
+  var $, ajax_url_attr, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
   tab_type_attr = 'data-tab-type';
   show_content_id_attr = 'data-show-content-id';
@@ -23,7 +24,7 @@
   };
   $.Bettertabs = {
     change_browser_url: function(url) {
-      if ((typeof history != "undefined" && history !== null) && (history.replaceState != null)) {
+      if ((typeof history !== "undefined" && history !== null) && (history.replaceState != null)) {
         return history.replaceState(null, document.title, url);
       }
     },
@@ -45,14 +46,16 @@
         if (tab_type_of(this_link) !== 'link') {
           event.preventDefault();
           this_tab = this_link.parent();
-          if (!this_tab.is('.active') && !this_link.is('.ajax-loading')) {
+          if (!this_tab.hasClass('active') && !this_link.hasClass('ajax-loading')) {
             this_tab_content = tabs_contents.filter("#" + (content_id_from(this_link)));
             previous_active_tab = tabs.filter('.active');
             previous_active_tab_content = tabs_contents.filter('.active');
             activate_tab_and_content = function() {
               tabs.removeClass('active');
+              tabs_links.removeClass('active');
               tabs_contents.removeClass('active').addClass('hidden');
               this_tab.addClass('active');
+              this_link.addClass('active');
               this_tab_content.removeClass('hidden').addClass('active');
               previous_active_tab_content.trigger('bettertabs-after-deactivate');
               this_tab_content.trigger('bettertabs-after-activate');
