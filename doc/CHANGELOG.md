@@ -3,8 +3,8 @@ Bettertabs Changelog
 
 2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
-  * Tag v1.3.2
-  * Update the jquery.bettertabs plugin to update the link .active class a well as li element
+  * Tag v1.3.3
+  * Bugfix and update the jquery.bettertabs plugin to update the link .active class a well as li element
 
 2011-09-13  Mario Izquierdo Martinez <mizquierdo@majorleaguegaming.com>
 
