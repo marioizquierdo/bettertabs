@@ -1,7 +1,7 @@
 (function() {
   /*!
    jQuery Bettertabs Plugin
-   version: 1.3.4 (Sep-13-2011)
+   version: 1.3.5 (Sep-13-2011)
    @requires jQuery v1.3 or later
    
    Examples and documentation at: https://github.com/agoragames/bettertabs
@@ -70,11 +70,15 @@
             if (tab_type_of(this_link) === 'ajax' && !(this_link.data('content-loaded-already') != null)) {
               this_link.addClass('ajax-loading');
               this_tab_content.trigger('bettertabs-before-ajax-loading');
-              return this_tab_content.load(this_link.attr(ajax_url_attr), function() {
-                this_link.removeClass('ajax-loading');
-                this_link.data('content-loaded-already', true);
-                this_tab_content.trigger('bettertabs-after-ajax-loading');
-                return activate_tab_and_content();
+              return this_tab_content.load(this_link.attr(ajax_url_attr), function(responseText, textStatus, XMLHttpRequest) {
+                if (textStatus === 'error') {
+                  return window.location = this_link.attr('href');
+                } else {
+                  this_link.removeClass('ajax-loading');
+                  this_link.data('content-loaded-already', true);
+                  this_tab_content.trigger('bettertabs-after-ajax-loading');
+                  return activate_tab_and_content();
+                }
               });
             } else {
               return activate_tab_and_content();
