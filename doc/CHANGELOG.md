@@ -1,6 +1,12 @@
 Bettertabs Changelog
 ====================
 
+2011-09-12  Mario Izquierdo Martinez <tothemario@gmail.com>
+
+  * Tag v1.3
+  * Gem converted into a Rails 3.1 Engine that uses the asset pipeline to serve the jquery.bettertabs plugin
+  * Test dummy app converted to Rails 3.1
+
 2011-06-23  Mario Izquierdo Martinez <tothemario@gmail.com>
 
   * Tag v1.2.3

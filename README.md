@@ -10,7 +10,7 @@ Easy for beginners, complete for experts.
 
 ## Features ##
 
-  * Rails 3.1 Engine that includes:
+  * Rails Engine that includes:
     * helper to easily generate tabs and content markup
     * jQuery plugin to handle the JavaScript behavior
   * Simplicity: Easy to install, easy to use, easy to update
@@ -28,7 +28,7 @@ Easy for beginners, complete for experts.
 ## Requirements: ##
   * Ruby 1.9.2
   * Rails 3.1
-  * [jquery-ujs](https://github.com/rails/jquery-ujs) with jQuery 1.3 or higher
+  * [jquery-rails](https://github.com/rails/jquery-rails) with jQuery 1.3 or higher
 
 Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
 
@@ -39,8 +39,8 @@ Gem dependency. Add bettertabs to your gem file and run `bundle install`.
 
     gem 'bettertabs'
 
-To include the [jquery.bettertabs plugin](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js.coffee)
-add these line to the top of your `app/assets/javascripts/application.js` file:
+To include the [jquery.bettertabs plugin](https://github.com/agoragames/bettertabs/blob/master/app/assets/javascripts/jquery.bettertabs.js.coffee)
+add these line to the top of your `app/assets/javascripts/application.js` (**after** the *jQuery* library):
 
     //= require jquery.bettertabs
 
@@ -48,8 +48,7 @@ Or if you prefer the compressed version:
 
     //= require jquery.bettertabs.min
 
-This works the same way as [jquery-ujs](https://github.com/rails/jquery-ujs); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
-
+This works the same way as [jquery-rails](https://github.com/rails/jquery-rails); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
 
 ## Usage and examples ##
 
@@ -74,10 +73,9 @@ An usage example should be self explanatory (using HAML, but it also works with 
 ### More examples and documentation: ###
 
   * [EXAMPLES document](https://github.com/agoragames/bettertabs/blob/master/doc/EXAMPLES.md)
-  * [Bettertabs Styles reference guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md)
+  * [Bettertabs CSS reference guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md)
   * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/app/helpers/bettertabs_helper.rb) (params and options)
-  * [Rails3 test demo application](https://github.com/agoragames/bettertabs/tree/master/spec/dummy)
-  * Anyway, don't be afraid and dig into the code!
+  * [Test Dummy Rails 3.1 application](https://github.com/agoragames/bettertabs/tree/master/spec/dummy) that has some usage examples
   
 
 ## Tabs Routes ##
@@ -184,7 +182,7 @@ Perhaps the most important CSS rule here is to define `display: none;` for `div.
 
       div.bettertabs div.content.hidden { display: none; }
 
-Use the [Bettertabs Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to get a stylesheet that you can use as a starting point.
+Use the [Bettertabs CSS Guidelines](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to get a stylesheet that you can use as a starting point.
 
 
 ## How to help make Bettertabs even Better ##
