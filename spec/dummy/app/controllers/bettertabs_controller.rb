@@ -10,7 +10,6 @@ class BettertabsController < ApplicationController
   end
   
   def ajax
-    sleep 1 # to better feel the loading time
     render partial: 'ajax' and return if request.xhr?
   end
   

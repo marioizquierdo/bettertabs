@@ -8,7 +8,14 @@
 </head>
 <body>
 
-<h1>Bettertabs Dummy App</h1>
+<h1>Bettertabs Test App</h1>
+<p>
+  This is the dummy app used for test the bettertabs engine (spec/dummy)
+  <%= link_to 'see code in Github', 'http://github.com/agoragames/bettertabs/tree/master/spec/dummy' %></br>
+  For this demo, the hidden content is shown inside a dashed border to see what is loaded when you click a tab,</br>
+  click on the links below to see different types of tabs (static, link or ajax).
+  
+</p>
 <div class="nav">
   <%= link_to 'static', { action: 'static'}, title: 'Using only static tabs' %> | 
   <%= link_to 'link', { action: 'link_tab_1'}, title: 'Using only link tabs' %> | 
