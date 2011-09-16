@@ -3,26 +3,32 @@ Bettertabs for Rails
 
 We know that splitting content into several tabs is easy, but doing well, clean, DRY, accessible, usable, fast and testable is not so simple after all.
 
-Bettertabs is a simple engine for Rails that includes a helper and a jquery plugin to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
-
-Easy for beginners, complete for experts.
+Bettertabs is a simple `Rails 3.1 Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
 
 ## Features ##
 
-  * Rails Engine that includes:
-    * helper to easily generate tabs and content markup
-    * jQuery plugin to handle the JavaScript behavior
-  * Simplicity: Easy to install, easy to use, easy to update
-  * Flexible and customizable
-  * Forces you to DRY-up your views for your tabbed content
-  * Forces you to make it very accessible and usable:
-    * Designed to work with and without JavaScript
-    * When click on a tab, the address bar url is changed (only in HTML5 browsers), so:
-      * The browser's back and reload buttons will still work as expected
-      * All tabbed sections can be permalinked, keeping the selected tab
-  * Makes testing views simple. Because its easy to make it working without javascript, you can test view components with the rails built-in functional and integration tests
-  * The CSS styles are up to you, although we include some [reference CSS](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to start with
+Having to worry only on a few aspects like putting the content in the right site, you will have a site with tabs that:
+
+  * Works with tabs for static, links or ajax loaded content
+  * Works without javascript, so you can click on a tab before the whole page was loaded and it will work. Also it's usually much more easy to test.
+  * It changes the URL (in HTML5 browsers, using [history.replaceState()](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history)), so when you use the browser's back button, you'll land in the last selected tab. Also selected tabs can be permalinked.
+  * Declarative code, that helps you to have your view code more readable and DRY
+  * It has some basic error handling (like for example if the ajax loaded content returns an error, it redirects to the error page)
+  * If you need more control in the javascript behavior, you can use some predefined jQuery events (for example: `$('#tabs').bind('bettertabs-before-ajax-loading', show_loading_clock);`)
+  * The gem does not include any stylesheet, because each project has a different way of showing the tabs styles. Anyway the generated HTML is easy to style (see the [CSS Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md))
+
+## Try it out ##
+
+The bettertabs gem includes a dummy test app, that is used for development (to execute rspec tests) and that can be easily launched to play with.
+
+  * [Try online the demo app](http://bettertabs-demo.herokuapp.com)
+  * Or to run it on your machine:
+        
+        $ git clone git://github.com/agoragames/bettertabs.git
+        $ cd bettertabs
+        /bettertabs$ bundle install
+        /bettertabs$ bundle exec rackup config.ru
 
 
 ## Requirements: ##
@@ -35,7 +41,7 @@ Anyway you can use bettertabs without javascript (or use your own javascript han
 
 ## Install ##
 
-Gem dependency. Add bettertabs to your gem file and run `bundle install`.
+Add bettertabs gem to your Gemfile and run `bundle install`.
 
     gem 'bettertabs'
 

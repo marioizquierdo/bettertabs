@@ -82,7 +82,7 @@ describe "Bettertabs requests" do
     end
     
     it "should include the default ajax=true extra param in the data-ajax-url" do
-      response.body.should include("data-ajax-url=\"/bettertabs/ajax?ajax_selected_tab=ajax_tab_2&amp;ajax=true\"")
+      response.body.should include("data-ajax-url=\"/bettertabs/ajax/ajax_tab_2?ajax=true\"")
     end
     
     it "should render only the selected tab content" do
