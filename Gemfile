@@ -16,4 +16,5 @@ gemspec
 # The dummy app runs in production mode, in bettertabs-demo.heroku
 group :production do
   gem 'haml-rails'
+  gem 'rspec-rails' # dunno why but this is also needed, otherwise heroku dont deploy
 end
