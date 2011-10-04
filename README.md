@@ -66,7 +66,7 @@ Bettertabs supports three kinds of tabs:
 
 An usage example should be self explanatory (using HAML, but it also works with ERB and other template systems):
 
-    = bettertabs :profile_tabs do |tab|
+    = bettertabs :profile_tabs, :selected_tab => :friends do |tab|
       = tab.static :general, 'My Profile' do
         %h2 General Info
         = show_user_general_info(@user)
@@ -74,7 +74,11 @@ An usage example should be self explanatory (using HAML, but it also works with 
       = tab.ajax :friends, :partial => 'shared/friends'
       
       = tab.link :groups do
-        =  render :partial => 'groups/user_groups', :locals => { :user => @user }
+        = render :partial => 'groups/user_groups', :locals => { :user => @user }
+
+This will show three tabs: 'My Profile' (static, that will be preloaded and show when click in the tab), 'Friends' (ajax, that will load and show the content when click in the tab) and 'Groups' (link, that will reload the whole page).
+
+The option `:selected_tab` specifies the default selected tab, when the page is loaded. It only defines which tab is selected when no `{bettertabs_id}_selected_tab` param is present.
 
 ### More examples and documentation: ###
 
