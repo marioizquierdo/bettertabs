@@ -3,7 +3,7 @@ Bettertabs for Rails
 
 We know that splitting content into several tabs is easy, but doing well, clean, DRY, accessible, usable, fast and testable is not so simple after all.
 
-Bettertabs is a simple `Rails 3.1 Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
+Bettertabs is a simple `Rails 3.1+ Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
 
 
 ## Features ##
@@ -33,7 +33,7 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 
 ## Requirements: ##
   * Ruby 1.9.2
-  * Rails 3.1
+  * Rails 3.1+
   * [jquery-rails](https://github.com/rails/jquery-rails) with jQuery 1.3 or higher
 
 Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
