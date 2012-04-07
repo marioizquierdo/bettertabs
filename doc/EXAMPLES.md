@@ -206,7 +206,7 @@ Is easy to mix all types of tabs, and customize them using the provided options:
 ## More documentation ##
 
   * [Main README document](https://github.com/agoragames/bettertabs/blob/master/README.md)
-  * [Bettertabs Styles reference guide](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/stylesheets/README.md)
-  * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/lib/bettertabs/bettertabs_helper.rb) (params and options)
-  * [Rails3 test demo application](https://github.com/agoragames/bettertabs/tree/master/test/ruby_1_9/rails_3_0)
+  * [Bettertabs Styles reference guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md)
+  * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/app/helpers/bettertabs_helper.rb) (params and options)
+  * [Rails3 test demo application](https://github.com/agoragames/bettertabs/tree/master/spec/dummy)
   * Anyway, don't be afraid of digging into the code, it's very straightforward.
