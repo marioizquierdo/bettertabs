@@ -89,6 +89,18 @@ This will show three tabs: 'My Profile' (static, that will be preloaded and show
 
 The option `:selected_tab` specifies the default selected tab, when the page is loaded. It only defines which tab is selected when no `{bettertabs_id}_selected_tab` param is present.
 
+The markup generated from Bettertabs consists of a tab list `<ul>` containing the tabs (one `<li>` containing a `<a>` per tab) and a `<div class="content">` for each tab holding the tab content.  
+In case you want to render additional content between the tab list and the tab contents, you can do so by using `content_for :before_tab_id`:
+
+    - content_for :before_profile_tabs do
+      %p This content is rendered between tab list and tab content!
+
+    = bettertabs :profile_tabs do |tab|
+      = tab.static :general, 'My Profile' do
+        Foo!
+
+Note that the name of the `content_for` block must be consistent with id of the tabs (`bettertabs :profile_tabs` -> `content_for :before_profile_tabs`).
+
 ### More examples and documentation: ###
 
   * [EXAMPLES document](https://github.com/agoragames/bettertabs/blob/master/doc/EXAMPLES.md)
