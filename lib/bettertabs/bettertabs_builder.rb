@@ -8,6 +8,7 @@ class BettertabsBuilder
     @template = template
     @selected_tab_id = selected_tab_id
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
+    @after_tabs_content = options.delete(:after_tabs_content)
     @wrapper_html_options = options
     
     @tabs = []
@@ -110,6 +111,9 @@ class BettertabsBuilder
            end.join.html_safe
          end +
        
+         # After tabs content
+         @after_tabs_content +
+
          # Content sections
          @contents.map do |content|
            tag(:div, content[:html_options]) do
