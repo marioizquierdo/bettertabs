@@ -7,6 +7,7 @@ class BettertabsBuilder
     @bettertabs_id = bettertabs_id
     @template = template
     @selected_tab_id = selected_tab_id
+    @list_html_options = options.delete(:list_html_options) # sets html_options on the :ul element
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
     @wrapper_html_options = options
     
@@ -97,7 +98,10 @@ class BettertabsBuilder
       tag(:div, @wrapper_html_options) do
       
         # Tabs list
-         tag(:ul, class: 'tabs') do
+         @list_html_options ||= {}
+         @list_html_options[:class] ||= ''
+         @list_html_options[:class] += @list_html_options[:class].empty? ? 'tabs' : ' tabs'
+         tag(:ul, @list_html_options) do
            @tabs.map do |tab|
              tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
                tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
