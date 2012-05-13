@@ -183,7 +183,7 @@ Since the *mytabs* partial just contains the bettertabs helper, and bettertabs h
 
 Is easy to mix all types of tabs, and customize them using the provided options:
   
-    = bettertabs :bettertabs_example, :selected_tab => :chooseme, :class => 'bettertabs example' do |tab|
+    = bettertabs :bettertabs_example, :selected_tab => :chooseme, :class => 'bettertabs example', :list_html_options => {:class => 'list_class'} do |tab|
     
       = tab.static :simplest_tab, class: 'awesome-tab' do
         Click this tab to see this content.
