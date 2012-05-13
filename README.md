@@ -71,7 +71,7 @@ An usage example should be self explanatory (using HAML, but it also works with 
         %h2 General Info
         = show_user_general_info(@user)
           
-      = tab.ajax :friends, :partial => 'shared/friends'
+      = tab.ajax :friends, :partial => 'shared/friends', :locals => { :user => @user }
       
       = tab.link :groups do
         = render :partial => 'groups/user_groups', :locals => { :user => @user }

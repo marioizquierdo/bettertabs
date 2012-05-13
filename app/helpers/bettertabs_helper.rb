@@ -36,7 +36,7 @@ module BettertabsHelper
   #   * tab_text: is the content of the tab link. Defaults to tab_id.to_s.titleize
   #   * options:
   #       * :partial => Partial to render as content. Defaults to *tab_id*, but if &block given it captures the block instead of render partial.
-  #                     If you need to suply locals to the partial, use a block with a render(:partial => partial, :locals => {locals}) call.
+  #       * :locals => Hash of local variables for the partial.
   #       * :url => href of the tab link. For link tabs, this is the href to go when click.
   #                 For ajax and static tabs, this is the url to replace in the browser when click (HTML5 history.replaceState()), and also the url
   #                 to use if JavaSciprt is disabled. 
