@@ -50,6 +50,10 @@ describe "Bettertabs requests" do
     it "should not include the attribute data-ajax-url in static tabs" do
       response.body.should_not include("data-ajax-url")
     end
+
+    it "should include the local variable content for the tab_content partial" do
+      response.body.should include("Local value")
+    end
   end
   
   describe "GET /bettertabs/link_tab_1" do
