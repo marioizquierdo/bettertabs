@@ -6,6 +6,7 @@
 #    * options can be:
 #       * :selected_tab => tab_id to select by default
 #         * :selected_tab should be overridden with params[:"#{bettertabs_id}_selected_tab"] if present
+#       * :list_html_options => html_options for the :ul element
 #       * any other option is used as wrapper html_options (wrapper is the top-level widget dom element).
 #  * The bettertabs helper should render clear markup:
 #     * A wrapper with class 'bettertabs'
@@ -49,6 +50,14 @@ describe "Bettertabs requests" do
     
     it "should not include the attribute data-ajax-url in static tabs" do
       response.body.should_not include("data-ajax-url")
+    end
+
+    it "should set the requested wrapper class" do
+      response.body.should have_selector("div.bettertabs.example")
+    end
+
+    it "should set the requested list class" do
+      response.body.should have_selector("ul.list_class")
     end
   end
   
@@ -111,5 +120,4 @@ describe "Bettertabs requests" do
     end
   end 
 
-  
 end
