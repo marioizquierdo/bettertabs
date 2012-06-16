@@ -9,11 +9,14 @@ Bettertabs rails helper depends on the jquery.bettertabs plugin to work properly
 The jquery.bettertabs plugin is written using CoffeeScript.
 How to install CoffeeScript: http://jashkenas.github.com/coffee-script/#installation
 
-To install, first make sure you have a working copy of the latest stable version of Node.js, and npm (the Node Package Manager).
+*OR* if you're lazzy and only care about a single compilation, use the online coffee compiler, copy-paste the js code and get back the coffee code, just in the [coffeescript web site](http://jashkenas.github.com/coffee-script/#installation). (if you do this way, please wrap the generated code with `(function() { --code-- }).call(this);`)
+
+To install the coffee comand, first make sure you have a working copy of the latest stable version of Node.js, and npm (the Node Package Manager).
+
 You can then install CoffeeScript with npm:
 
     npm install coffee-script
-    
+
 
 Then you will be able to compile `jquery.bettertabs.js.coffee` into `jquery.bettertabs.js` using the coffee command:
 

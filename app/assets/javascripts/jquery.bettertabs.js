@@ -3,9 +3,9 @@
    jQuery Bettertabs Plugin
    version: 1.3.6 (Mar-12-2012)
    @requires jQuery v1.3 or later
-   
+
    Examples and documentation at: https://github.com/agoragames/bettertabs
-   
+
    Copyright (c) 2011 Mario Izquierdo (tothemario@gmail.com)
    Dual licensed under the MIT and GPL licenses:
      http://www.opensource.org/licenses/mit-license.php
@@ -38,7 +38,7 @@
       wrapper = $(this);
       tabs = wrapper.find('ul.tabs > li');
       tabs_links = wrapper.find('ul.tabs > li > a');
-      tabs_contents = wrapper.children('.content');
+      tabs_contents = wrapper.children('.content:not(.content-only-block)');
       tabs_and_contents = tabs.add(tabs_contents);
       active_tab_link = tabs_links.filter('.active');
       if (tab_type_of(active_tab_link) === 'ajax') {
