@@ -4,4 +4,4 @@
     Content for static_tab_1
   = tab.static :static_tab_2 do
     Content for static_tab_2
-  = tab.static :tab_content, 'Static Tab 3' # should render partial 'tab_content'
+  = tab.static :tab_content, 'Static Tab 3', :locals => {:local_var => 'Local value'} # should render partial 'tab_content'
