@@ -24,7 +24,7 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 
   * [Try online the demo app](http://bettertabs-demo.herokuapp.com)
   * Or to run it on your machine:
-        
+
         $ git clone git://github.com/agoragames/bettertabs.git
         $ cd bettertabs
         /bettertabs$ bundle install
@@ -32,11 +32,9 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 
 
 ## Requirements: ##
-  * Ruby 1.9.2
-  * Rails 3.1+
-  * [jquery-rails](https://github.com/rails/jquery-rails) with jQuery 1.3 or higher
-
-Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
+  * Ruby 1.9
+  * Rails 3.1 or higher
+  * jQuery 1.3 or higher (but bettertabs also works without javascript)
 
 
 ## Install ##
@@ -56,6 +54,21 @@ Or if you prefer the compressed version:
 
 This works the same way as [jquery-rails](https://github.com/rails/jquery-rails); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
 
+Use the bettertabs helper to define your view (see usage and examples below).
+
+And finally, apply the javascript behavior to the generated markup. For this, you can simply add a line of jQuery in your application.js file to apply the bettertabs jquery plugin to the bettertabs helper generated markup:
+
+    jQuery('.bettertabs').bettertabs(); // apply bettertabs to any element with the bettertabs css class
+
+You can instead avoid this line of javascript by allowing the helper to add inline javascript along with the generated markup. For that you can create an initializer (e.g. `app/config/initializers/bettertabs.rb`) to change the default configuration:
+
+    Bettertabs.configure do |config|
+      # Render a Javascript snippet to initialize the tabs automatically after rendering the tabs.
+      # This requires that you include jQuery before the tabs are rendered.
+      # Default: false
+      # config.attach_jquery_bettertabs_inline = true
+    end
+
 ## Usage and examples ##
 
 Bettertabs supports three kinds of tabs:
@@ -63,6 +76,7 @@ Bettertabs supports three kinds of tabs:
   * **Link Tabs**: Loads only the active tab contents; when click on another tab, go to the specified URL. No JavaScript needed.
   * **Static Tabs**: Loads all content of all static tabs, but only show the active content; when click on another tab, activate its related content. When JavaScript disabled, it behaves like *link tabs*.
   * **Ajax Tabs**: Loads only the active tab contents; when click on another tab, loads its content via ajax and show. When JavaScript disabled, it behaves like *link tabs*.
+  * **Only Content**: You can also add a block of content that is always visible (with no tab)
 
 An usage example should be self explanatory (using HAML, but it also works with ERB and other template systems):
 
@@ -70,9 +84,9 @@ An usage example should be self explanatory (using HAML, but it also works with 
       = tab.static :general, 'My Profile' do
         %h2 General Info
         = show_user_general_info(@user)
-          
-      = tab.ajax :friends, :partial => 'shared/friends'
-      
+
+      = tab.ajax :friends, :partial => 'shared/friends', :locals => { :user => @user }
+
       = tab.link :groups do
         = render :partial => 'groups/user_groups', :locals => { :user => @user }
 
@@ -86,7 +100,7 @@ The option `:selected_tab` specifies the default selected tab, when the page is 
   * [Bettertabs CSS reference guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md)
   * [Bettertabs helper](https://github.com/agoragames/bettertabs/blob/master/app/helpers/bettertabs_helper.rb) (params and options)
   * [Test Dummy Rails 3.1 application](https://github.com/agoragames/bettertabs/tree/master/spec/dummy) that has some usage examples
-  
+
 
 ## Tabs Routes ##
 
@@ -102,7 +116,7 @@ in a view accessible by a route like this:
 
     match 'profile/:nickname', :to => 'profiles#lookup', :as => 'profile'
 
-When you go to `/profile/dude`, your tabs links will have the following hrefs: 
+When you go to `/profile/dude`, your tabs links will have the following hrefs:
 
   * :general tab href: `/profile/dude?profile_tabs_selected_tab=general`
   * :friends tab href: `/profile/dude?profile_tabs_selected_tab=friends`
@@ -117,8 +131,8 @@ So now the tabs links will point to the following URLs:
 
   * :general tab href: `/profile/dude/general`
   * :friends tab href: `/profile/dude/friends`
-  
-  
+
+
 ## JavaScript with the jquery.bettertabs plugin #
 
 The bettertabs helper will generate the needed markup that has an inline script at the bottom:
@@ -132,7 +146,7 @@ You can see the jquery.bettertabs source code in the github repo:
   * [CoffeeScript version](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js.coffee)
   * [JavaScript (generated by coffee) version](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.js)
   * [Compressed JavaScript](https://github.com/agoragames/bettertabs/raw/master/app/assets/javascripts/jquery.bettertabs.min.js)
-  
+
 The plugin defines one single jQuery method `jQuery(selector).bettertabs();` that is applied to the generated markup.
 
 This script will take the tab type from each tab link `data-tab-type` attribute (that can be "link", "static" or "ajax"), and will match each tab with its content using the tab link `data-show-content-id` attribute, that is the id of the related content.
@@ -159,7 +173,7 @@ You can interact with the bettertabs widget in the following ways:
   * **Hook some behavior when a tab is clicked**: attach a 'click' handler to the tab link or use any of the provided custom events.
   * **Show a loading clock while ajax is loading**: or any other kind of feedback to the user, use any of the provided custom events. You can also handle it styling the CSS class `.ajax-loading` that is added to the ajax tab link while ajax content is loading (see the [Styles Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md))
   * **Change the browser URL**: in the same way the plugin does when a tab is clicked, use `jQuery.Bettertabs.change_browser_url(new_url);`
-  
+
 Custom events that are attached to each tab content:
 
   * *'bettertabs-before-deactivate'*:   fired on content that is active and will be deactivated
@@ -175,7 +189,7 @@ Usage example of custom events:
     $("#profile_tabs_friends_content").bind('bettertabs-after-activate', function(){
       alert('friends content is visible');
     });
-    
+
     // Display the $('#loading-clock') element while ajax tabs are loading
     $("#profile_tabs").bind('bettertabs-before-ajax-loading', function(){
       $('#loading-clock').show();
@@ -187,7 +201,7 @@ Usage example of custom events:
 ## CSS Styles ##
 
 Bettertabs provides a rails helper to generate HTML and a jQuery plugin as JavaScript, but not any CSS styles because those are very different for each project and can not be abstracted into a common purpose CSS stylesheet.
-  
+
 Perhaps the most important CSS rule here is to define `display: none;` for `div.content.hidden`, because contents are never hidden using the jquery.hide() method or similar. The jquery.bettertabs plugin just adds the `.active` class to the active tab and active content, and the `.hidden` class to the non active content. You will need to use a CSS rule like this:
 
       div.bettertabs div.content.hidden { display: none; }
@@ -196,7 +210,7 @@ Use the [Bettertabs CSS Guidelines](https://github.com/agoragames/bettertabs/blo
 
 
 ## How to help make Bettertabs even Better ##
- 
+
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
@@ -204,9 +218,3 @@ Use the [Bettertabs CSS Guidelines](https://github.com/agoragames/bettertabs/blo
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-
-## Future work ##
-
-  * Try to make it compatible with ruby 1.8.x
-  * Improve tests to check the JavaScript code (Jasmine, Evergreen, Capybara, whatever)
-  

@@ -41,7 +41,7 @@ In partial `app/views/home/_mytabs.html.erb`:
       <%= tab.static :about, 'Who am I?', :partial => '/shared/about' %>
       <%= tab.static :contact_me %>
     <% end %>
-     
+
 
 The :about and :contact_me tabs will get the content from the referenced partials. Put any content there, for example:
 
@@ -53,7 +53,7 @@ In partial `app/views/home/_contact_me.html.erb`:
 
     <h2>How to contact me:<h2/>
     <p><%= @contact_info.inspect %></p>
-    
+
 In controller `app/controllers/home_controller.rb`:
 
     class HomeController < ApplicationController
@@ -79,21 +79,21 @@ Ajax tabs perform an asynchronous call to get the content before showing it. Giv
 supposing the bettertabs_id is :mytabs, it will generate the following markup for the tab item:
 
     <li id="home_mytabs_tab">
-      <a data-tab-type="ajax" 
-         data-show-content-id="home_mytabs_content" 
-         data-ajax-url="/home/ajax_tab" 
+      <a data-tab-type="ajax"
+         data-show-content-id="home_mytabs_content"
+         data-ajax-url="/home/ajax_tab"
          href="/home/index">
          Home
       </a>
     </li>
-    
+
 The attributes *data-tab-type*, *data-show-content-id* and *data-ajax-url* will be used by the jquery.bettertabs plugin.
 
 So here there are two important options:
 
   * :url => The tag link href. Is used to change the browser url (html5 browsers only) and as url when JavaScript is off. Default to current url plus the param `#{bettertabs_id}_selected_tab=#{tab_id}`.
   * :ajax_url => Defaults to :url plus the param `ajax=true`. Is used to perform the ajax request.
-  
+
 Both options have a default value, so if you just write:
 
     tab.ajax :home
@@ -101,9 +101,9 @@ Both options have a default value, so if you just write:
 supposing the bettertabs_id is :mytabs, and the current url is '/home', it will generate the following markup for the tab item:
 
     <li id="home_mytabs_tab">
-      <a data-tab-type="ajax" 
-         data-show-content-id="home_mytabs_content" 
-         data-ajax-url="/home?mytabs_selected_tab=home&ajax=true" 
+      <a data-tab-type="ajax"
+         data-show-content-id="home_mytabs_content"
+         data-ajax-url="/home?mytabs_selected_tab=home&ajax=true"
          href="/home?mytabs_selected_tab=home">
          Home
       </a>
@@ -135,7 +135,7 @@ In partial `app/views/home/_mytabs.html.erb`:
       <%= tab.ajax :about, 'Who am I?', :partial => '/shared/about' %>
       <%= tab.ajax :contact_me %>
     <% end %>
-     
+
 **Note** that the only difference between this example and the *static tabs example* is to use `tab.ajax` declaration instead of `tab.static`.
 
 Partials `app/views/shared/_about.html.erb` and `app/views/home/_contact_us.html.erb` (same as in the *static tabs example*).
@@ -156,7 +156,7 @@ In controller `app/controllers/home_controller.rb`, you can load only the needed
         when 'contact_us' then
           @contact_info = { :address => 'The Hell', :telephone => '666'}
         end
-        
+
         # When ajax, render only the selected tab content (handled by bettertabs helper)
         render :partial => 'mytabs' and return if request.xhr? # you can also check if params[:ajax].present?
       end
@@ -177,29 +177,43 @@ Since the *mytabs* partial just contains the bettertabs helper, and bettertabs h
     * to send the link to other person and he/she will open the selected tab
   * Easily change the behavior of a tab to be `ajax`, `static` or `link`. It always work.
   * Keep your views DRY, clean and readable
-  
 
-## Example using HAML and ruby1.9.2 ##
+## Adding Blocks Of Content with no Tabs
+
+Sometimes is possible you want to add inline content that has to be always visible, for example if the tabs are a form and you want to show the "save" button, taking advantage of the easy styling:
+
+    <%= bettertabs :mytabs do |tab| %>
+      <%= tab.static :personal_data %>
+      <%= tab.static :credit_card %>
+      <%= tab.static :bonus_fields %>
+
+      <%= tab.only_content_block do %>
+        <%= button_tag 'Save' %>
+      <% end %>
+
+    <% end %>
+
+## Example using HAML and ruby1.9 ##
 
 Is easy to mix all types of tabs, and customize them using the provided options:
-  
-    = bettertabs :bettertabs_example, :selected_tab => :chooseme, :class => 'bettertabs example' do |tab|
-    
+
+    = bettertabs :bettertabs_example, :selected_tab => :chooseme, :class => 'bettertabs example', :list_html_options => {:class => 'list_class'} do |tab|
+
       = tab.static :simplest_tab, class: 'awesome-tab' do
         Click this tab to see this content.
-        
+
       = tab.static :chooseme, 'Please, Click me!' # as default, renders partial: 'chooseme'
-        
+
       = tab.static :render_another_partial, partial: 'another_partial'
-      
+
       = tab.link :link_to_another_place, url: go_to_other_place_url  # will make a new request
-        
+
       = tab.ajax :cool_ajax, ajax_url: remote_call_path, partial: 'cool_partial'
       -# In this case, you shoud take care of that remote_call_path is using the same partial: 'cool_partial'
-      
+
       = tab.ajax :album, url: url_for(@album), partial: 'shared/album'
       -# This one will make the ajax call to the ajax_url: url_for(@album, :ajax => true)
-      
+
       = tab.ajax :ajax_tab, title: 'Content is loaded only once'
 
 
