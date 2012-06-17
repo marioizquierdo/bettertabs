@@ -1,15 +1,10 @@
 %h2 Testing static tabs
 = bettertabs :static, :class => 'bettertabs example', :list_html_options => {:class => 'list_class'} do |tab|
-  = tab.only_content_block do
-    Content for only_content_block_1
 
   = tab.static :static_tab_1 do
     Content for static_tab_1
 
-  = tab.only_content_block do
-    Content for only_content_block_2
-
   = tab.static :static_tab_2 do
     Content for static_tab_2
 
-  = tab.static :tab_content, 'Static Tab 3', :locals => {:local_var => 'Local value'} # should render partial 'tab_content'
+  = tab.static :tab_content, 'Static Tab 3', :locals => {:local_var => 'Content for static_tab_3'} # should render partial 'tab_content'

@@ -4,3 +4,5 @@
   = tab.static :static_tab do
     Content for the static tab
   = tab.ajax :ajax_tab, partial: 'tab_content'
+  = tab.only_content_block do
+    This block is always visible (has not tab)

@@ -35,6 +35,7 @@
 require 'spec_helper'
 
 describe "Bettertabs requests" do
+
   describe "GET /bettertabs/static" do
     before(:all) { get '/bettertabs/static' }
 
@@ -45,7 +46,7 @@ describe "Bettertabs requests" do
     it "should render all content even for hidden tabs" do
       response.body.should include("Content for static_tab_1")
       response.body.should include("Content for static_tab_2")
-      response.body.should include("tab_content partial content")
+      response.body.should include("Content for static_tab_3")
     end
 
     it "should not include the attribute data-ajax-url in static tabs" do
@@ -58,10 +59,6 @@ describe "Bettertabs requests" do
 
     it "should set the requested list class" do
       response.body.should have_selector("ul.list_class")
-    end
-
-    it "should include the local variable content for the tab_content partial" do
-      response.body.should include("Local value")
     end
   end
 
@@ -107,6 +104,21 @@ describe "Bettertabs requests" do
       get '/bettertabs/ajax?ajax_selected_tab=ajax_tab_2'
       response.body.should_not include("Content for the ajax_tab_1")
       response.body.should include("Content for the ajax_tab_2")
+    end
+  end
+
+  describe "GET /bettertabs/only_content_block" do
+    before(:all) { get '/bettertabs/only_content_block' }
+
+    it "has a 200 status code" do
+      response.status.should be(200)
+    end
+
+    it "should render all content including content blocks" do
+      response.body.should include("Content for only_content_block_1")
+      response.body.should include("Content for static_tab_1")
+      response.body.should include("Content for only_content_block_2")
+      response.body.should include("Content for static_tab_2")
     end
   end
 
