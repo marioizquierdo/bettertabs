@@ -56,6 +56,15 @@ Or if you prefer the compressed version:
 
 This works the same way as [jquery-rails](https://github.com/rails/jquery-rails); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
 
+Add an optional initializer (e.g. `app/config/initializers/bettertabs.rb`) to change the default configuration:
+
+    Bettertabs.configure do |config|
+      # Render a Javascript snippet to initialize the tabs automatically after rendering the tabs.
+      # This requires that you include jQuery before the tabs are rendered.
+      # Default: true
+      # config.attach_jquery_bettertabs_inline = false
+    end
+
 ## Usage and examples ##
 
 Bettertabs supports three kinds of tabs:
