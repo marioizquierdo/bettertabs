@@ -34,9 +34,7 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 ## Requirements: ##
   * Ruby 1.9
   * Rails 3.1 or higher
-  * jQuery 1.3 or higher
-
-Anyway you can use bettertabs without javascript (or use your own javascript handler) since the bettertabs helper only generates the appropriate markup.
+  * jQuery 1.3 or higher (but bettertabs also works without javascript)
 
 
 ## Install ##
@@ -56,13 +54,19 @@ Or if you prefer the compressed version:
 
 This works the same way as [jquery-rails](https://github.com/rails/jquery-rails); you don't need to copy-paste the javascript code in your app because it will be served using the Asset Pipeline.
 
-Add an optional initializer (e.g. `app/config/initializers/bettertabs.rb`) to change the default configuration:
+Use the bettertabs helper to define your view (see usage and examples below).
+
+And finally, apply the javascript behavior to the generated markup. For this, you can simply add a line of jQuery in your application.js file to apply the bettertabs jquery plugin to the bettertabs helper generated markup:
+
+    jQuery('.bettertabs').bettertabs(); // apply bettertabs to any element with the bettertabs css class
+
+You can instead avoid this line of javascript by allowing the helper to add inline javascript along with the generated markup. For that you can create an initializer (e.g. `app/config/initializers/bettertabs.rb`) to change the default configuration:
 
     Bettertabs.configure do |config|
       # Render a Javascript snippet to initialize the tabs automatically after rendering the tabs.
       # This requires that you include jQuery before the tabs are rendered.
-      # Default: true
-      # config.attach_jquery_bettertabs_inline = false
+      # Default: false
+      # config.attach_jquery_bettertabs_inline = true
     end
 
 ## Usage and examples ##
