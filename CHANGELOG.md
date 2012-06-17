@@ -1,6 +1,15 @@
 Bettertabs Changelog
 ====================
 
+v1.4
+
+  * Upgrade notes
+    * The bettertabs helper no longer generates javascript inline to apply the jquery pluging. If you update you need to add the javascript yourself (something like `jQuery('.bettertabs').bettertabs();` in your application.js file), or you can add an initializer to set the attach_jquery_bettertabs_inline option to true (see README).
+  * Add possibility to define default options (only attach_jquery_bettertabs_inline for now) in an initializer, https://github.com/agoragames/bettertabs/pull/6. Thanks (@manuelmeurer). Then set the attach_jquery_bettertabs_inline option to false by default.
+  * Allow to include content blocks that do not have tabs with `tab.only_content_block`. Inspired by https://github.com/agoragames/bettertabs/pull/7 by (@manuelmeurer)
+  * Add option :locals on tab definition. https://github.com/agoragames/bettertabs/pull/9. Thanks (@pdf)
+  * Add option :list_html_options to allow specifying :html_options for the :ul element, https://github.com/agoragames/bettertabs/pull/10. Thanks (@pdf)
+
 v1.3.6
 
   * Adds support for Rails 3.2, https://github.com/agoragames/bettertabs/pull/3. Thanks (@jlee42).
