@@ -3,7 +3,8 @@ module Bettertabs
     attr_accessor :attach_jquery_bettertabs_inline
 
     def initialize
-      @attach_jquery_bettertabs_inline = true
+      # defaults
+      @attach_jquery_bettertabs_inline = false
     end
   end
 end

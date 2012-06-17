@@ -50,7 +50,8 @@ module BettertabsHelper
   def bettertabs(bettertabs_id, options={})
     bettertabs_id = bettertabs_id.to_s
     selected_tab_id = params[:"#{bettertabs_id}_selected_tab"] || options.delete(:selected_tab) || options.delete(:selected)
-    options[:class] ||= "bettertabs"
+    options[:class] ||= ''
+    options[:class] += ' bettertabs'
     options[:id] ||= bettertabs_id
     options[:render_only_active_content] = controller.request.xhr? unless options.include?(:render_only_active_content)
     attach_jquery_bettertabs_inline = options.include?(:attach_jquery_bettertabs_inline) ? options.delete(:attach_jquery_bettertabs_inline) : Bettertabs.configuration.attach_jquery_bettertabs_inline
