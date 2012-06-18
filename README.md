@@ -208,13 +208,16 @@ Perhaps the most important CSS rule here is to define `display: none;` for `div.
 
 Use the [Bettertabs CSS Guidelines](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md) to get a stylesheet that you can use as a starting point.
 
+## Changelog ##
 
-## How to help make Bettertabs even Better ##
+See the [CHANGELOG](https://github.com/agoragames/bettertabs/blob/master/CHANGELOG.md) file.
 
+## Contributing to bettertabs ##
+
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
-
