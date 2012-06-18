@@ -1,10 +1,10 @@
 ###!
  jQuery Bettertabs Plugin
- version: 1.3.6 (Mar-12-2012)
+ version: 1.4 (Mar-12-2012)
  @requires jQuery v1.3 or later
- 
+
  Examples and documentation at: https://github.com/agoragames/bettertabs
- 
+
  Copyright (c) 2011 Mario Izquierdo (tothemario@gmail.com)
  Dual licensed under the MIT and GPL licenses:
    http://www.opensource.org/licenses/mit-license.php
@@ -28,7 +28,7 @@ $.Bettertabs =
     # so better not to use pushState (because we can't safely revert to previous state), replaceState just works fine.
     if history? and history.replaceState?
       history.replaceState null, document.title, url
-      
+
   # jQuery.Bettertabs.select_tab(bettertabs_id, tab_id) => click on the tab_id link of the bettertabs_id widget
   select_tab: (bettertabs_id, tab_id) ->
     $("##{tab_id}_#{bettertabs_id}_tab a").click()
@@ -38,13 +38,13 @@ $.fn.bettertabs = ->
     wrapper = $(this)
     tabs = wrapper.find 'ul.tabs > li'
     tabs_links = wrapper.find 'ul.tabs > li > a'
-    tabs_contents = wrapper.children '.content'
+    tabs_contents = wrapper.children '.content:not(.content-only-block)'
     tabs_and_contents = tabs.add tabs_contents
     active_tab_link = tabs_links.filter '.active'
-    
+
     # When tab-type is ajax, mark the first active link as content-loaded-already to not be loaded again when click later
     active_tab_link.data('content-loaded-already', yes) if tab_type_of(active_tab_link) is 'ajax'
-    
+
     tabs_links.click (event) ->
       this_link = $(this)
       unless tab_type_of(this_link) is 'link'
@@ -64,10 +64,10 @@ $.fn.bettertabs = ->
             previous_active_tab_content.trigger 'bettertabs-after-deactivate'
             this_tab_content.trigger 'bettertabs-after-activate'
             $.Bettertabs.change_browser_url this_link.attr('href')
-          
+
           previous_active_tab_content.trigger 'bettertabs-before-deactivate'
           this_tab_content.trigger 'bettertabs-before-activate'
-          
+
           if tab_type_of(this_link) is 'ajax' and not this_link.data('content-loaded-already')?
             this_link.addClass('ajax-loading')
             this_tab_content.trigger 'bettertabs-before-ajax-loading'

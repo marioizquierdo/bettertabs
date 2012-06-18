@@ -5,4 +5,7 @@
   <% end %>
   <%= tab.static :static_tab, partial: 'tab_content' %>
   <%= tab.ajax :ajax_tab, partial: 'tab_content' %>
+  <%= tab.only_content_block do %>
+    This block is always visible (has not tab)
+  <% end %>
 <% end %>

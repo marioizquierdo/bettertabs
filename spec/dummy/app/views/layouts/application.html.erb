@@ -14,13 +14,14 @@
   <%= link_to 'see code in Github', 'http://github.com/agoragames/bettertabs/tree/master/spec/dummy' %></br>
   For this demo, the hidden content is shown inside a dashed border to see what is loaded when you click a tab,</br>
   click on the links below to see different types of tabs (static, link or ajax).
-  
+
 </p>
 <div class="nav">
-  <%= link_to 'static', { action: 'static'}, title: 'Using only static tabs' %> | 
-  <%= link_to 'link', { action: 'link_tab_1'}, title: 'Using only link tabs' %> | 
-  <%= link_to 'ajax', { action: 'ajax'}, title: 'Using only ajax tabs' %> | 
-  <%= link_to 'mixed', { action: 'mixed'}, title: 'Using static, link and ajax tabs in the same widget' %> | 
+  <%= link_to 'static', { action: 'static'}, title: 'Using only static tabs' %> |
+  <%= link_to 'link', { action: 'link_tab_1'}, title: 'Using only link tabs' %> |
+  <%= link_to 'ajax', { action: 'ajax'}, title: 'Using only ajax tabs' %> |
+  <%= link_to 'content blocks', { action: 'only_content_block'}, title: 'Also content with no tabs' %> |
+  <%= link_to 'mixed', { action: 'mixed'}, title: 'Using static, link and ajax tabs in the same widget' %> |
   <%= link_to 'mixed (erb)', { action: 'mixed_with_erb'}, title: 'Using static, link and ajax tabs in a ERB template' %>
 </div>
 
