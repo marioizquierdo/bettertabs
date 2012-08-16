@@ -9,6 +9,7 @@ class BettertabsBuilder
     @selected_tab_id = selected_tab_id
     @list_html_options = options.delete(:list_html_options) # sets html_options on the :ul element
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
+    @initial_tab_via_ajax = options.delete(:initial_tab_via_ajax) # determines method for initial tab draw
     @wrapper_html_options = options
 
     @tabs = []
@@ -61,7 +62,8 @@ class BettertabsBuilder
 
     if @render_only_active_content
       if active?(tab_id)
-        @only_active_content = block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals)
+        @only_active_content = ''
+        @only_active_content << block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals) if @initial_tab_via_ajax
       end
     else
       # Tabs
@@ -70,7 +72,7 @@ class BettertabsBuilder
 
       # Content
       content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
-      if active?(tab_id) or tab_type == :static # Only render content for selected tab (static content is always rendered).
+      if (!@initial_tab_via_ajax and active?(tab_id)) or tab_type == :static # Only render content for selected tab (static content is always rendered).
         content = block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals)
       else
         content = ''
@@ -117,6 +119,7 @@ class BettertabsBuilder
            @tabs.map do |tab|
              content_tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
                tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
+               tab[:html_options][:"data-tab-initial-via"] ||= tab[:tab_type] if @initial_tab_via_ajax # for javascript: load the initial tab via the tab type
                tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
                tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
                tab[:html_options][:class] ||= ''
