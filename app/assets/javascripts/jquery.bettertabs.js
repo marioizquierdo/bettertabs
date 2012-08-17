@@ -13,7 +13,7 @@
 
 
 (function() {
-  var $, ajax_url_attr, content_id_from, show_content_id_attr, tab_initial_via, tab_initial_via_attr, tab_type_attr, tab_type_of;
+  var $, ajax_url_attr, append_attr, append_id_from, content_id_from, show_append_id_attr, show_content_id_attr, tab_initial_via, tab_initial_via_attr, tab_type_attr, tab_type_of;
 
   $ = jQuery;
 
@@ -25,6 +25,10 @@
 
   ajax_url_attr = 'data-ajax-url';
 
+  append_attr = 'data-append';
+
+  show_append_id_attr = 'data-show-append-id';
+
   tab_type_of = function($tab_link) {
     return $tab_link.attr(tab_type_attr);
   };
@@ -35,6 +39,10 @@
 
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
+  };
+
+  append_id_from = function($tab_link) {
+    return $tab_link.attr(show_append_id_attr);
   };
 
   $.Bettertabs = {
@@ -81,6 +89,10 @@
               tabs.removeClass('active');
               tabs_links.removeClass('active');
               tabs_contents.removeClass('active').addClass('hidden');
+              if (this_link.attr(append_attr) && !this_tab_content.children("#" + (append_id_from(this_link))).length > 0) {
+                this_tab_content.append("<div id='" + (append_id_from(this_link)) + "'></div>");
+                $("#" + (append_id_from(this_link))).html($('<div/>').html(this_link.attr(append_attr)).text());
+              }
               this_tab.addClass('active');
               this_link.addClass('active');
               this_tab_content.removeClass('hidden').addClass('active');
@@ -98,7 +110,7 @@
                   return window.location = this_link.attr('href');
                 } else {
                   if (textStatus === 'error' && tab_initial_via(this_link) === 'ajax') {
-                    this_tab_content.html($(responseText).not('style').not('title').not('meta'));
+                    this_tab_content.html($(responseText).not('style').not('title').not('meta').not('script'));
                   }
                   this_link.removeClass('ajax-loading');
                   this_link.data('content-loaded-already', true);
