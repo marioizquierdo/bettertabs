@@ -57,6 +57,7 @@ class BettertabsBuilder
     tab_type = (options.delete(:tab_type) || :static).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
     ajax_url = options.delete(:ajax_url) || url_for_ajax(url) if tab_type == :ajax
+    append = options.delete(:append)
     @selected_tab_id ||= tab_id # defaults to first tab
 
     if @render_only_active_content
@@ -66,7 +67,7 @@ class BettertabsBuilder
     else
       # Tabs
       tab_html_options = options # any other option will be used as tab html_option
-      @tabs << { tab_id: tab_id, text: tab_text, url: url, ajax_url: ajax_url, html_options: tab_html_options, tab_type: tab_type, active: active?(tab_id) }
+      @tabs << { tab_id: tab_id, text: tab_text, url: url, ajax_url: ajax_url, html_options: tab_html_options, tab_type: tab_type, append: append, active: active?(tab_id) }
 
       # Content
       content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
@@ -119,6 +120,8 @@ class BettertabsBuilder
                tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
                tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
                tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
+               tab[:html_options][:"data-append"] ||= CGI.escapeHTML(tab[:append]) if tab[:append] # for javascript: content to append to tab
+               tab[:html_options][:"data-show-append-id"] ||= append_html_id_for(tab[:tab_id]) # for javascript: element id to append when select this tab
                tab[:html_options][:class] ||= ''
                tab[:html_options][:class] += 'active' if tab[:active]
                @template.link_to(tab[:text], tab[:url], tab[:html_options])
@@ -164,6 +167,11 @@ class BettertabsBuilder
   # Content html id
   def content_html_id_for(tab_id)
     "#{tab_id}_#{@bettertabs_id}_content"
+  end
+
+  # Content html id
+  def append_html_id_for(tab_id)
+    "#{tab_id}_#{@bettertabs_id}_append"
   end
 
   # Delegate @template.content_tag

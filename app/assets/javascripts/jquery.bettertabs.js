@@ -1,27 +1,44 @@
+/*!
+ jQuery Bettertabs Plugin
+ version: 1.4 (Mar-12-2012)
+ @requires jQuery v1.3 or later
+
+ Examples and documentation at: https://github.com/agoragames/bettertabs
+
+ Copyright (c) 2011 Mario Izquierdo (tothemario@gmail.com)
+ Dual licensed under the MIT and GPL licenses:
+   http://www.opensource.org/licenses/mit-license.php
+   http://www.gnu.org/licenses/gpl.html
+*/
+
+
 (function() {
-  /*!
-   jQuery Bettertabs Plugin
-   version: 1.4 (Mar-12-2012)
-   @requires jQuery v1.3 or later
+  var $, ajax_url_attr, append_attr, append_id_from, content_id_from, show_append_id_attr, show_content_id_attr, tab_type_attr, tab_type_of;
 
-   Examples and documentation at: https://github.com/agoragames/bettertabs
-
-   Copyright (c) 2011 Mario Izquierdo (tothemario@gmail.com)
-   Dual licensed under the MIT and GPL licenses:
-     http://www.opensource.org/licenses/mit-license.php
-     http://www.gnu.org/licenses/gpl.html
-  */
-  var $, ajax_url_attr, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
   $ = jQuery;
+
   tab_type_attr = 'data-tab-type';
+
   show_content_id_attr = 'data-show-content-id';
+
   ajax_url_attr = 'data-ajax-url';
+
+  append_attr = 'data-append';
+
+  show_append_id_attr = 'data-show-append-id';
+
   tab_type_of = function($tab_link) {
     return $tab_link.attr(tab_type_attr);
   };
+
   content_id_from = function($tab_link) {
     return $tab_link.attr(show_content_id_attr);
   };
+
+  append_id_from = function($tab_link) {
+    return $tab_link.attr(show_append_id_attr);
+  };
+
   $.Bettertabs = {
     change_browser_url: function(url) {
       if ((typeof history !== "undefined" && history !== null) && (history.replaceState != null)) {
@@ -32,6 +49,7 @@
       return $("#" + tab_id + "_" + bettertabs_id + "_tab a").click();
     }
   };
+
   $.fn.bettertabs = function() {
     this.each(function() {
       var active_tab_link, tabs, tabs_and_contents, tabs_contents, tabs_links, wrapper;
@@ -58,6 +76,10 @@
               tabs.removeClass('active');
               tabs_links.removeClass('active');
               tabs_contents.removeClass('active').addClass('hidden');
+              if (this_link.attr(append_attr) && !this_tab_content.children("#" + (append_id_from(this_link))).length > 0) {
+                this_tab_content.append("<div id='" + (append_id_from(this_link)) + "'></div>");
+                $("#" + (append_id_from(this_link))).html($('<div/>').html(this_link.attr(append_attr)).text());
+              }
               this_tab.addClass('active');
               this_link.addClass('active');
               this_tab_content.removeClass('hidden').addClass('active');
@@ -89,4 +111,5 @@
     });
     return this;
   };
+
 }).call(this);
