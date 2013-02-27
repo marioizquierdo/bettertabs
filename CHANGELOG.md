@@ -1,6 +1,10 @@
 Bettertabs Changelog
 ====================
 
+### v1.4.1 (2013-02-27)
+
+  * Ensure BettertabsHelper is included even if config.action_controller.include_all_helpers is false, https://github.com/agoragames/bettertabs/pull/13
+
 ### v1.4 (2012-06-18) ###
 
   * Upgrade notes
