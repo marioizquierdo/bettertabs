@@ -1,6 +1,10 @@
 Bettertabs Changelog
 ====================
 
+### v1.4.2 (2014-11-10)
+
+  * Add option :list_item_html_options to specify the attributes on the rendered li elements for tabs. Thanks (@jskinner-arpc).
+
 ### v1.4.1 (2013-02-27)
 
   * Ensure BettertabsHelper is included even if config.action_controller.include_all_helpers is false, https://github.com/agoragames/bettertabs/pull/13

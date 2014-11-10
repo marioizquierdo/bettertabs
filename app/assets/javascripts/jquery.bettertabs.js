@@ -1,7 +1,7 @@
 (function() {
   /*!
    jQuery Bettertabs Plugin
-   version: 1.4.1 (Mar-12-2012)
+   version: 1.4.2 (Nov-10-2014)
    @requires jQuery v1.3 or later
 
    Examples and documentation at: https://github.com/agoragames/bettertabs
