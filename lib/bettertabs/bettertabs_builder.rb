@@ -8,7 +8,7 @@ class BettertabsBuilder
     @template = template
     @selected_tab_id = selected_tab_id
     @list_html_options = options.delete(:list_html_options) # sets html_options on the :ul element
-    @list_item_html_options = options.delete(:list_item_html_options) # sets html_options on the :li element
+    @list_item_html_options = options.delete(:list_item_html_options) # sets html_options on the :li elements
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
     @wrapper_html_options = options
 
@@ -111,26 +111,26 @@ class BettertabsBuilder
       content_tag(:div, @wrapper_html_options) do
 
         # Tabs list
-         @list_html_options ||= {}
-         @list_html_options[:class] ||= ''
-         @list_html_options[:class] += @list_html_options[:class].empty? ? 'tabs' : ' tabs'
+        @list_html_options ||= {}
+        @list_html_options[:class] ||= ''
+        @list_html_options[:class] += @list_html_options[:class].empty? ? 'tabs' : ' tabs'
 
-         @list_item_html_options ||= {}
-         @list_item_html_options[:class] ||= ''
-         @list_item_html_options[:class] += @list_item_html_options[:class].empty? ? 'tab' : ' tab'
+        @list_item_html_options ||= {}
+        @list_item_html_options[:class] ||= ''
+        @list_item_html_options[:class] += @list_item_html_options[:class].empty? ? 'tab' : ' tab'
 
-         content_tag(:ul, @list_html_options) do
-           @tabs.map do |tab|
-             content_tag(:li, li_options(tab)) do
-               tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
-               tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
-               tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
-               tab[:html_options][:class] ||= ''
-               tab[:html_options][:class] += 'active' if tab[:active]
-               @template.link_to(tab[:text], tab[:url], tab[:html_options])
-             end
-           end.join.html_safe
-         end +
+        content_tag(:ul, @list_html_options) do
+          @tabs.map do |tab|
+            content_tag(:li, tab_li_options(tab)) do
+              tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
+              tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
+              tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
+              tab[:html_options][:class] ||= ''
+              tab[:html_options][:class] += 'active' if tab[:active]
+              @template.link_to(tab[:text], tab[:url], tab[:html_options])
+            end
+          end.join.html_safe
+        end +
 
          # Content sections
          @contents.map do |content|
@@ -194,8 +194,8 @@ class BettertabsBuilder
     end
   end
 
-  # Gets the the html_options for the list_item element
-  def li_options(tab)
+  # Gets the the html_options for the tab list_item element
+  def tab_li_options(tab)
     options = @list_item_html_options.clone
     options[:class] += ' active' if tab[:active]
     options[:id] = tab_html_id_for(tab[:tab_id])

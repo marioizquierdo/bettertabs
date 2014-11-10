@@ -4,10 +4,10 @@
 #  * The bettertabs hepler should accept:
 #    * args: (bettertabs_id, options)
 #    * options can be:
-#       * :selected_tab => tab_id to select by default
-#         * :selected_tab should be overridden with params[:"#{bettertabs_id}_selected_tab"] if present
+#       * :selected_tab => tab_id to select by default.
+#                          It is be overridden with request params[:"#{bettertabs_id}_selected_tab"] if present.
 #       * :list_html_options => html_options for the :ul element
-#       * :list_item_html_options => html_options for the :li element
+#       * :list_item_html_options => html_options for the :li elements (each tab )
 #       * any other option is used as wrapper html_options (wrapper is the top-level widget dom element).
 #  * The bettertabs helper should render clear markup:
 #     * A wrapper with class 'bettertabs'
