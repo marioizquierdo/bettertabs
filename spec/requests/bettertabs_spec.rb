@@ -7,6 +7,7 @@
 #       * :selected_tab => tab_id to select by default
 #         * :selected_tab should be overridden with params[:"#{bettertabs_id}_selected_tab"] if present
 #       * :list_html_options => html_options for the :ul element
+#       * :list_item_html_options => html_options for the :li element
 #       * any other option is used as wrapper html_options (wrapper is the top-level widget dom element).
 #  * The bettertabs helper should render clear markup:
 #     * A wrapper with class 'bettertabs'
@@ -79,6 +80,10 @@ describe "Bettertabs requests" do
     it "has a 200 status code" do
       response.status.should be(200)
     end
+
+    it 'should contain active on a list-item element' do
+      response.body.should have_selector("#tab2_link_tab[class*='active']")
+    end
   end
 
   describe "GET /bettertabs/ajax" do
@@ -89,6 +94,10 @@ describe "Bettertabs requests" do
 
     it "should include the attribute data-ajax-url in ajax tabs" do
       response.body.should include("data-ajax-url")
+    end
+
+    it 'should include the default class=tab for the list_item' do
+      response.body.should have_selector("li.tab")
     end
 
     it "should include the default ajax=true extra param in the data-ajax-url" do
