@@ -13,10 +13,20 @@
 
 
 (function() {
-  var $, ajax_url_attr, append_attr, append_id_from, content_id_from, show_append_id_attr, show_content_id_attr, tab_initial_via, tab_initial_via_attr, tab_type_attr, tab_type_of;
+  /*!
+   jQuery Bettertabs Plugin
+   version: 1.4.2 (Nov-10-2014)
+   @requires jQuery v1.3 or later
 
   $ = jQuery;
 
+   Copyright (c) 2011-2014 Mario Izquierdo (tothemario@gmail.com)
+   Dual licensed under the MIT and GPL licenses:
+     http://www.opensource.org/licenses/mit-license.php
+     http://www.gnu.org/licenses/gpl.html
+  */
+  var $, ajax_url_attr, content_id_from, show_content_id_attr, tab_type_attr, tab_type_of;
+  $ = jQuery;
   tab_type_attr = 'data-tab-type';
 
   tab_initial_via_attr = 'data-tab-initial-via';

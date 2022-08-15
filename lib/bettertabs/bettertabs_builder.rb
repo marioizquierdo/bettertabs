@@ -8,6 +8,7 @@ class BettertabsBuilder
     @template = template
     @selected_tab_id = selected_tab_id
     @list_html_options = options.delete(:list_html_options) # sets html_options on the :ul element
+    @list_item_html_options = options.delete(:list_item_html_options) # sets html_options on the :li elements
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
     @initial_tab_via_ajax = options.delete(:initial_tab_via_ajax) # determines method for initial tab draw
     @wrapper_html_options = options
@@ -113,24 +114,26 @@ class BettertabsBuilder
       content_tag(:div, @wrapper_html_options) do
 
         # Tabs list
-         @list_html_options ||= {}
-         @list_html_options[:class] ||= ''
-         @list_html_options[:class] += @list_html_options[:class].empty? ? 'tabs' : ' tabs'
-         content_tag(:ul, @list_html_options) do
-           @tabs.map do |tab|
-             content_tag(:li, class: ('active' if tab[:active]), id: tab_html_id_for(tab[:tab_id])) do
-               tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
-               tab[:html_options][:"data-tab-initial-via"] ||= tab[:tab_type] if @initial_tab_via_ajax # for javascript: load the initial tab via the tab type
-               tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
-               tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
-               tab[:html_options][:"data-append"] ||= CGI.escapeHTML(tab[:append]) if tab[:append] # for javascript: content to append to tab
-               tab[:html_options][:"data-show-append-id"] ||= append_html_id_for(tab[:tab_id]) # for javascript: element id to append when select this tab
-               tab[:html_options][:class] ||= ''
-               tab[:html_options][:class] += 'active' if tab[:active]
-               @template.link_to(tab[:text], tab[:url], tab[:html_options])
-             end
-           end.join.html_safe
-         end +
+        @list_html_options ||= {}
+        @list_html_options[:class] ||= ''
+        @list_html_options[:class] += @list_html_options[:class].empty? ? 'tabs' : ' tabs'
+
+        @list_item_html_options ||= {}
+        @list_item_html_options[:class] ||= ''
+        @list_item_html_options[:class] += @list_item_html_options[:class].empty? ? 'tab' : ' tab'
+
+        content_tag(:ul, @list_html_options) do
+          @tabs.map do |tab|
+            content_tag(:li, tab_li_options(tab)) do
+              tab[:html_options][:"data-tab-type"] ||= tab[:tab_type] # for javascript: change click behavior depending on type :static, :link or :ajax
+              tab[:html_options][:"data-show-content-id"] ||= content_html_id_for(tab[:tab_id]) # for javascript: element id to show when select this tab
+              tab[:html_options][:"data-ajax-url"] ||= tab[:ajax_url] if tab[:tab_type] == :ajax # for javascript: url to make ajax call
+              tab[:html_options][:class] ||= ''
+              tab[:html_options][:class] += 'active' if tab[:active]
+              @template.link_to(tab[:text], tab[:url], tab[:html_options])
+            end
+          end.join.html_safe
+        end +
 
          # Content sections
          @contents.map do |content|
@@ -197,6 +200,14 @@ class BettertabsBuilder
     rescue URI::InvalidURIError
       original_url
     end
+  end
+
+  # Gets the the html_options for the tab list_item element
+  def tab_li_options(tab)
+    options = @list_item_html_options.clone
+    options[:class] += ' active' if tab[:active]
+    options[:id] = tab_html_id_for(tab[:tab_id])
+    options
   end
 
 end

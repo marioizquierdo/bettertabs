@@ -1,24 +1,30 @@
 Bettertabs for Rails
 ====================
 
-We know that splitting content into several tabs is easy, but doing well, clean, DRY, accessible, usable, fast and testable is not so simple after all.
+We know that splitting content into several tabs is easy, but doing it well, clean, DRY, accessible, usable, testable and fast is not so simple after all.
 
-Bettertabs is a simple `Rails 3.1+ Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a easy and declarative way, forcing you to keep things simple and ensuring accessibility and usability, no matter if the content is loaded statically or via ajax.
+Bettertabs is a `Rails 3.1+ Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a declarative way, forcing you to [KISS](http://en.wikipedia.org/wiki/KISS_principle), ensuring accessibility and usability, whether the content is loaded statically or via ajax.
 
+[Try demo app online](http://bettertabs-demo.herokuapp.com)
 
 ## Features ##
 
-Having to worry only on a few aspects like putting the content in the right site, you will have a site with tabs that:
+Bettertabs allows for a site with tabs that:
 
   * Works with tabs for static, links or ajax loaded content
-  * Works without javascript, so you can click on a tab before the whole page was loaded and it will work. Also it's usually much more easy to test.
-  * It changes the URL (in HTML5 browsers, using [history.replaceState()](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history)), so when you use the browser's back button, you'll land in the last selected tab. Also selected tabs can be permalinked.
+  * Works without javascript
+    * SEO-friendly, specially good for ajax loaded tabs, because search engines can access and index the content anyway
+    * Progressive enhancement, obviously it works in devices without JavaScript
+    * Click on a tab before the whole page was loaded and it still works
+    * Allows to open the content in a new window if neccessary
+    * Easy to test
+  * It changes the URL (in HTML5 browsers, using [history.replaceState()](https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history)), so when you use the browser's back button, you'll land in the last selected tab, and selected tabs can be permalinked.
   * Declarative code, that helps you to have your view code more readable and DRY
   * It has some basic error handling (like for example if the ajax loaded content returns an error, it redirects to the error page)
   * If you need more control in the javascript behavior, you can use some predefined jQuery events (for example: `$('#tabs').bind('bettertabs-before-ajax-loading', show_loading_clock);`)
   * The gem does not include any stylesheet, because each project has a different way of showing the tabs styles. Anyway the generated HTML is easy to style (see the [CSS Reference Guide](https://github.com/agoragames/bettertabs/blob/master/doc/STYLESHEETS-GUIDE.md))
 
-## Try it out ##
+## Demo Test app ##
 
 The bettertabs gem includes a dummy test app, that is used for development (to execute rspec tests) and that can be easily launched to play with.
 
@@ -32,7 +38,7 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 
 
 ## Requirements: ##
-  * Ruby 1.9
+  * Ruby 1.9 or higher
   * Rails 3.1 or higher
   * jQuery 1.3 or higher (but bettertabs also works without javascript)
 
