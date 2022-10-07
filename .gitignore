@@ -5,3 +5,5 @@ pkg/*
 log
 tmp
 spec/dummy/public/assets/*
+
+.idea/
