@@ -1,6 +1,10 @@
 Bettertabs Changelog
 ====================
 
+### v1.5.1 (2022-10-07)
+
+  * Adds support for Rails 6 (removes support for older Rails versions)
+   
 ### v1.4.2 (2014-11-10)
 
   * Add option :list_item_html_options to specify the attributes on the rendered li elements for tabs. Thanks (@jskinner-arpc).
