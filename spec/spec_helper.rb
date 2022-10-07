@@ -15,4 +15,5 @@ Dir[File.join(ENGINE_RAILS_ROOT, "spec/support/**/*.rb")].each {|f| require f }
 RSpec.configure do |config|
   config.mock_with :rspec
   config.include Capybara::RSpecMatchers, type: :request
+  config.expect_with(:rspec) { |c| c.syntax = :should }
 end
