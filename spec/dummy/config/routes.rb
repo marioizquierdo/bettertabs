@@ -1,6 +1,6 @@
 Dummy::Application.routes.draw do
   root :to => "bettertabs#static"
 
-  match 'bettertabs/ajax(/:ajax_selected_tab)' => 'bettertabs#ajax'
-  match 'bettertabs/:action(.:format)', controller: 'bettertabs'
+  get 'bettertabs/ajax(/:ajax_selected_tab)', to: 'bettertabs#ajax'
+  get 'bettertabs/:action(.:format)', controller: 'bettertabs'
 end

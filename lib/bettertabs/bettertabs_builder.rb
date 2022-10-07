@@ -55,7 +55,7 @@ class BettertabsBuilder
     partial = options.delete(:partial) || tab_id.to_s unless block_given?
     raise "Bettertabs: #{tab_html_id_for(tab_id)} error. Used :locals option and a block of content at the same time." if block_given? and options[:locals]
     locals = options.delete(:locals) unless block_given?
-    url = options.delete(:url) || @template.params.permit.merge(:"#{@bettertabs_id}_selected_tab" => tab_id)
+    url = options.delete(:url) || @template.params.merge(:"#{@bettertabs_id}_selected_tab" => tab_id).permit!
     tab_type = (options.delete(:tab_type) || :static).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
     ajax_url = options.delete(:ajax_url) || url_for_ajax(url) if tab_type == :ajax

@@ -2,6 +2,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require 'rspec/rails'
+require 'capybara/rspec'
 require 'haml'
 
 
@@ -11,10 +12,8 @@ ENGINE_RAILS_ROOT=File.join(File.dirname(__FILE__), '../')
 # in spec/support/ and its subdirectories.
 Dir[File.join(ENGINE_RAILS_ROOT, "spec/support/**/*.rb")].each {|f| require f }
 
-Webrat.configure do |config|
-  config.mode = :rails
-end
-
 RSpec.configure do |config|
   config.mock_with :rspec
+  config.include Capybara::RSpecMatchers, type: :request
+  config.expect_with(:rspec) { |c| c.syntax = :should }
 end

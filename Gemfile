@@ -18,4 +18,4 @@ gem "rails", '~>6.0'
 gem "jquery-rails"
 gem "haml-rails"
 gem "rspec-rails"
-gem "webrat"
+gem "capybara"

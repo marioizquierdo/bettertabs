@@ -33,11 +33,11 @@
 #  * When ajax call (format.js), the bettertabs helper should return ONLY the content of the selected tab (to simplify the controller render partial calls.).
 #
 
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe "Bettertabs requests" do
 
-  describe "GET /bettertabs/static" do
+  describe "GET /bettertabs/static", :type => :request do
     before(:all) { get '/bettertabs/static' }
 
     it "has a 200 status code" do
@@ -55,6 +55,8 @@ describe "Bettertabs requests" do
     end
 
     it "should set the requested wrapper class" do
+      b = response.body
+      puts b.inspect
       response.body.should have_selector("div.bettertabs.example")
     end
 
@@ -63,7 +65,7 @@ describe "Bettertabs requests" do
     end
   end
 
-  describe "GET /bettertabs/link_tab_1" do
+  describe "GET /bettertabs/link_tab_1", :type => :request do
     before(:all) { get '/bettertabs/link_tab_1' }
     it "has a 200 status code" do
       response.status.should be(200)
@@ -75,7 +77,7 @@ describe "Bettertabs requests" do
 
   end
 
-  describe "GET /bettertabs/link_tab_2" do
+  describe "GET /bettertabs/link_tab_2", :type => :request do
     before(:all) { get '/bettertabs/link_tab_2' }
     it "has a 200 status code" do
       response.status.should be(200)
@@ -86,7 +88,7 @@ describe "Bettertabs requests" do
     end
   end
 
-  describe "GET /bettertabs/ajax" do
+  describe "GET /bettertabs/ajax", :type => :request do
     before(:all) { get '/bettertabs/ajax' }
     it "has a 200 status code" do
       response.status.should be(200)
@@ -116,7 +118,7 @@ describe "Bettertabs requests" do
     end
   end
 
-  describe "GET /bettertabs/only_content_block" do
+  describe "GET /bettertabs/only_content_block", :type => :request do
     before(:all) { get '/bettertabs/only_content_block' }
 
     it "has a 200 status code" do
@@ -131,14 +133,14 @@ describe "Bettertabs requests" do
     end
   end
 
-  describe "GET /bettertabs/mixed" do
+  describe "GET /bettertabs/mixed", :type => :request do
     before(:all) { get '/bettertabs/mixed' }
     it "has a 200 status code" do
       response.status.should be(200)
     end
   end
 
-  describe "GET /bettertabs/mixed_with_erb" do
+  describe "GET /bettertabs/mixed_with_erb", :type => :request do
     before(:all) { get '/bettertabs/mixed_with_erb' }
     it "has a 200 status code" do
       response.status.should be(200)
