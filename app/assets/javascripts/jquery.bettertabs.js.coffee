@@ -14,10 +14,15 @@
 $ = jQuery
 
 tab_type_attr = 'data-tab-type' # attribute on tab links that indicate the tab type
+tab_initial_via_attr = 'data-tab-initial-via' # attribute on tab links that indicate the tab type
 show_content_id_attr = 'data-show-content-id' # attribute on tab links that indicate the related content id
 ajax_url_attr = 'data-ajax-url' # attribute on ajax tab liks with the ajax href
+append_attr = 'data-append' # attribute on tab links with the content to append
+show_append_id_attr = 'data-show-append-id' # attribute on tab links with the append container id
 tab_type_of = ($tab_link) -> $tab_link.attr(tab_type_attr)
+tab_initial_via = ($tab_link) -> $tab_link.attr(tab_initial_via_attr)
 content_id_from = ($tab_link) -> $tab_link.attr(show_content_id_attr)
+append_id_from = ($tab_link) -> $tab_link.attr(show_append_id_attr)
 
 # jQuery.Bettertabs API
 $.Bettertabs =
@@ -42,8 +47,14 @@ $.fn.bettertabs = ->
     tabs_and_contents = tabs.add tabs_contents
     active_tab_link = tabs_links.filter '.active'
 
-    # When tab-type is ajax, mark the first active link as content-loaded-already to not be loaded again when click later
-    active_tab_link.data('content-loaded-already', yes) if tab_type_of(active_tab_link) is 'ajax'
+    if tab_type_of(active_tab_link) is 'ajax'
+      unless tab_initial_via(active_tab_link) is 'ajax'
+        # When tab-type is ajax, mark the first active link as content-loaded-already to not be loaded again when click later
+        active_tab_link.data('content-loaded-already', yes)
+      else
+        active_tab_link.parent().removeClass('active')
+        $ ->
+          active_tab_link.click()
 
     tabs_links.click (event) ->
       this_link = $(this)
@@ -58,6 +69,9 @@ $.fn.bettertabs = ->
             tabs.removeClass('active')
             tabs_links.removeClass('active')
             tabs_contents.removeClass('active').addClass('hidden')
+            if this_link.attr(append_attr) and not this_tab_content.children("##{append_id_from this_link}").length > 0
+              this_tab_content.append("<div id='#{append_id_from this_link}'></div>")
+              $("##{append_id_from this_link}").html($('<div/>').html(this_link.attr(append_attr)).text())
             this_tab.addClass('active')
             this_link.addClass('active')
             this_tab_content.removeClass('hidden').addClass('active')
@@ -72,9 +86,11 @@ $.fn.bettertabs = ->
             this_link.addClass('ajax-loading')
             this_tab_content.trigger 'bettertabs-before-ajax-loading'
             this_tab_content.load this_link.attr(ajax_url_attr), (responseText, textStatus, XMLHttpRequest) ->
-              if textStatus is 'error'
+              if textStatus is 'error' and not tab_initial_via(this_link) is 'ajax'
                 window.location = this_link.attr('href')
               else
+                if textStatus is 'error' and tab_initial_via(this_link) is 'ajax'
+                  this_tab_content.html $(responseText).not('style').not('title').not('meta').not('script')
                 this_link.removeClass('ajax-loading')
                 this_link.data('content-loaded-already', yes)
                 this_tab_content.trigger 'bettertabs-after-ajax-loading'

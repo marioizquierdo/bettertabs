@@ -10,6 +10,7 @@ class BettertabsBuilder
     @list_html_options = options.delete(:list_html_options) # sets html_options on the :ul element
     @list_item_html_options = options.delete(:list_item_html_options) # sets html_options on the :li elements
     @render_only_active_content = options.delete(:render_only_active_content) # used in ajax calls
+    @initial_tab_via_ajax = options.delete(:initial_tab_via_ajax) # determines method for initial tab draw
     @wrapper_html_options = options
 
     @tabs = []
@@ -54,24 +55,26 @@ class BettertabsBuilder
     partial = options.delete(:partial) || tab_id.to_s unless block_given?
     raise "Bettertabs: #{tab_html_id_for(tab_id)} error. Used :locals option and a block of content at the same time." if block_given? and options[:locals]
     locals = options.delete(:locals) unless block_given?
-    url = options.delete(:url) || @template.params.merge(:"#{@bettertabs_id}_selected_tab" => tab_id)
+    url = options.delete(:url) || @template.params.permit.merge(:"#{@bettertabs_id}_selected_tab" => tab_id)
     tab_type = (options.delete(:tab_type) || :static).to_sym
     raise "Bettertabs: #{tab_type.inspect} tab type not supported. Use one of #{TAB_TYPES.inspect} instead." unless TAB_TYPES.include?(tab_type)
     ajax_url = options.delete(:ajax_url) || url_for_ajax(url) if tab_type == :ajax
+    append = options.delete(:append)
     @selected_tab_id ||= tab_id # defaults to first tab
 
     if @render_only_active_content
       if active?(tab_id)
-        @only_active_content = block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals)
+        @only_active_content = ''
+        @only_active_content << block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals) if @initial_tab_via_ajax
       end
     else
       # Tabs
       tab_html_options = options # any other option will be used as tab html_option
-      @tabs << { tab_id: tab_id, text: tab_text, url: url, ajax_url: ajax_url, html_options: tab_html_options, tab_type: tab_type, active: active?(tab_id) }
+      @tabs << { tab_id: tab_id, text: tab_text, url: url, ajax_url: ajax_url, html_options: tab_html_options, tab_type: tab_type, append: append, active: active?(tab_id) }
 
       # Content
       content_html_options = { id: content_html_id_for(tab_id), class: "content #{active?(tab_id) ? 'active' : 'hidden'}" }
-      if active?(tab_id) or tab_type == :static # Only render content for selected tab (static content is always rendered).
+      if (!@initial_tab_via_ajax and active?(tab_id)) or tab_type == :static # Only render content for selected tab (static content is always rendered).
         content = block_given? ? @template.capture(&block) : @template.render(:partial => partial, :locals => locals)
       else
         content = ''
@@ -170,6 +173,11 @@ class BettertabsBuilder
   # Content html id
   def content_html_id_for(tab_id)
     "#{tab_id}_#{@bettertabs_id}_content"
+  end
+
+  # Content html id
+  def append_html_id_for(tab_id)
+    "#{tab_id}_#{@bettertabs_id}_append"
   end
 
   # Delegate @template.content_tag

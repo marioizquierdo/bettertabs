@@ -48,6 +48,8 @@ module BettertabsHelper
   #                 By default is the same as the provided :url option, plus the { :ajax => true } param.
   #                 Note: This extra param makes the :url and :ajax_url different for the browser and prevents a cache mistake,
   #                 otherwise the browser may fetch the url cache with the ajax response, producing a bug when visiting again the same page.
+  #       * :append => used as data-append html5 attribute in the link tab, that will be used in the jquery.bettertabs plugin as content to
+  #                 append to the content element
   #
   def bettertabs(bettertabs_id, options={})
     bettertabs_id = bettertabs_id.to_s
