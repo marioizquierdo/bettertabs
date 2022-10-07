@@ -5,6 +5,8 @@ We know that splitting content into several tabs is easy, but doing it well, cle
 
 Bettertabs is a `Rails 3.1+ Engine` that includes a **helper** and a **jquery plugin** to render the needed markup and javascript for a section with tabs in a declarative way, forcing you to [KISS](http://en.wikipedia.org/wiki/KISS_principle), ensuring accessibility and usability, whether the content is loaded statically or via ajax.
 
+Starting with branch 1.5+ Bettertabs supports Rails > 6.0.
+
 [Try demo app online](http://bettertabs-demo.herokuapp.com)
 
 ## Features ##
@@ -38,8 +40,8 @@ The bettertabs gem includes a dummy test app, that is used for development (to e
 
 
 ## Requirements: ##
-  * Ruby 1.9 or higher
-  * Rails 3.1 or higher
+  * Ruby 2.5 or higher
+  * Rails 6.0 or higher
   * jQuery 1.3 or higher (but bettertabs also works without javascript)
 
 
