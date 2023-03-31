@@ -14,8 +14,9 @@ source "http://rubygems.org"
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 # The dummy app runs in production mode, in bettertabs-demo.heroku
-gem "rails", '~>6.0'
+gem "rails", '~>7.0'
 gem "jquery-rails"
 gem "haml-rails"
+gem "sprockets-rails"
 gem "rspec-rails"
 gem "capybara"
